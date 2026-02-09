@@ -1182,31 +1182,26 @@
             <button class="project-card" onclick="selectPreset(this, 40200000000, 'HS2')">
                 <div class="project-amount">£40.2bn</div>
                 <div class="project-name">HS2</div>
-                <div class="project-description">It has cost £40.2bn so far. Spain built Barcelona to Madrid high-speed rail for £17bn. <span class="sources-link" onclick="event.stopPropagation(); openSourcesPopup('HS2', [{name: 'HS2 6-monthly report to Parliament', url: 'https://www.gov.uk/government/speeches/hs2-6-monthly-report-to-parliament-july-2025'}])">Source</span></div>
             </button>
 
             <button class="project-card" onclick="selectPreset(this, 3970000000, 'A9 Dualling')">
                 <div class="project-amount">£3.97bn</div>
                 <div class="project-name">A9 Dualling</div>
-                <div class="project-description">Scottish road upgrade connecting Perth to Inverness, and it's <span class="emphasis">TEN</span> years overdue. Due to finish in 2035. <span class="sources-link" onclick="event.stopPropagation(); openSourcesPopup('A9 Dualling', [{name: 'A9 Dualling - BBC News', url: 'https://www.bbc.co.uk/news/uk-scotland-highlands-islands-67771630'}, {name: 'A9 Dualling Programme Overview', url: 'https://www.a9dualling.scot/a9-dualling/programme-overview/'}])">Sources</span></div>
             </button>
 
             <button class="project-card" onclick="selectPreset(this, 1200000000, 'Lower Thames Crossing')">
                 <div class="project-amount">£1.2bn</div>
                 <div class="project-name">Lower Thames Crossing</div>
-                <div class="project-description">So far, the Lower Thames Crossing has cost £1.2 <span class="emphasis">BILLION</span>. Despite this colossal spend, not a <span class="emphasis">SINGLE</span> metre has actually been built. <span class="read-more-toggle" onclick="event.stopPropagation(); toggleReadMore(this)">Read more...</span><span class="read-more-content"> Norway built the world's longest road tunnel for just £98 million. This means on just <span class="emphasis">PLANNING</span> alone Norway could have built <span class="emphasis">TWELVE</span> tunnels. <span class="sources-link" onclick="event.stopPropagation(); openSourcesPopup('Lower Thames Crossing', [{name: '£1.2bn Lower Thames Crossing', url: 'https://www.ft.com/content/917d4b7f-318e-46fe-ba44-664551ebcf13'}, {name: 'Norwegian Tunnel £98 million', url: 'https://www.mirror.co.uk/travel/incredible-98m-tunnel-worlds-longest-34256712'}])">Sources</span> <span class="read-less-toggle" onclick="event.stopPropagation(); closeReadMore(this)">Read less</span></span></div>
             </button>
 
             <button class="project-card" onclick="selectPreset(this, 700000000, 'Fish Disco')">
                 <div class="project-amount">£700m</div>
                 <div class="project-name">Fish Disco</div>
-                <div class="project-description">Will cost £700m after 'vegetable lobby' pressure. Saves one salmon every ... <span class="emphasis">TWELVE</span> years. <span class="sources-link" onclick="event.stopPropagation(); openSourcesPopup('Fish Disco', [{name: 'Fish Disco - iNews Investigation', url: 'https://inews.co.uk/news/politics/700m-fish-disco-saving-one-salmon-every-12-years-4060892'}])">Source</span></div>
             </button>
 
             <button class="project-card" onclick="selectPreset(this, 100000000, 'Bat Tunnel')">
                 <div class="project-amount">£100m</div>
                 <div class="project-name">Bat Tunnel</div>
-                <div class="project-description">A tunnel built to help bats cross a railway line safely, and the bats can crawl through the mesh in the tunnel... <span class="sources-link" onclick="event.stopPropagation(); openSourcesPopup('Bat Tunnel', [{name: 'Bat Tunnel - BBC News', url: 'https://www.bbc.co.uk/news/articles/c3dep92x054o'}, {name: 'HS2 Bat Tunnel Not Batproof - Telegraph', url: 'https://www.telegraph.co.uk/news/2024/12/21/hs2s-100m-bat-shield-tunnel-is-not-batproof/'}])">Sources</span></div>
             </button>
         </div>
 
@@ -1458,16 +1453,20 @@
                 // Update share text
                 updateShareText(projectName, households);
                 
-                // Custom messages for specific projects
+                // Project descriptions shown in results
                 const formattedNumber = formatNumber(households);
                 let explanation = '';
-                
+
                 if (projectName === 'HS2') {
-                    explanation = `The worst thing ... it isn't even finished. The number is likely to rise even further.`;
+                    explanation = `It has cost £40.2bn so far. Spain built Barcelona to Madrid high-speed rail for £17bn. The worst thing ... it isn't even finished. The number is likely to rise even further. <a href="#" onclick="event.preventDefault(); openSourcesPopup('HS2', [{name: 'HS2 6-monthly report to Parliament', url: 'https://www.gov.uk/government/speeches/hs2-6-monthly-report-to-parliament-july-2025'}])">Source</a>`;
+                } else if (projectName === 'A9 Dualling') {
+                    explanation = `Scottish road upgrade connecting Perth to Inverness, and it's <strong>TEN</strong> years overdue. Due to finish in 2035. <a href="#" onclick="event.preventDefault(); openSourcesPopup('A9 Dualling', [{name: 'A9 Dualling - BBC News', url: 'https://www.bbc.co.uk/news/uk-scotland-highlands-islands-67771630'}, {name: 'A9 Dualling Programme Overview', url: 'https://www.a9dualling.scot/a9-dualling/programme-overview/'}])">Sources</a>`;
                 } else if (projectName === 'Lower Thames Crossing') {
-                    explanation = `<strong>${formattedNumber} households</strong> have paid for their entire lives, and not a single metre has been built from this.`;
+                    explanation = `So far, the Lower Thames Crossing has cost £1.2 <strong>BILLION</strong>. Despite this colossal spend, not a <strong>SINGLE</strong> metre has actually been built. Norway built the world's longest road tunnel for just £98 million. This means on just <strong>PLANNING</strong> alone Norway could have built <strong>TWELVE</strong> tunnels. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Lower Thames Crossing', [{name: '£1.2bn Lower Thames Crossing', url: 'https://www.ft.com/content/917d4b7f-318e-46fe-ba44-664551ebcf13'}, {name: 'Norwegian Tunnel £98 million', url: 'https://www.mirror.co.uk/travel/incredible-98m-tunnel-worlds-longest-34256712'}])">Sources</a>`;
                 } else if (projectName === 'Fish Disco') {
-                    explanation = `<strong>${formattedNumber} households</strong> have paid their entire lives, and it would only save one salmon ... every <strong>TWELVE</strong> years. <a href="https://inews.co.uk/news/politics/700m-fish-disco-saving-one-salmon-every-12-years-4060892" target="_blank">Source</a>`;
+                    explanation = `Will cost £700m after 'vegetable lobby' pressure. Saves one salmon every ... <strong>TWELVE</strong> years. <a href="https://inews.co.uk/news/politics/700m-fish-disco-saving-one-salmon-every-12-years-4060892" target="_blank">Source</a>`;
+                } else if (projectName === 'Bat Tunnel') {
+                    explanation = `A tunnel built to help bats cross a railway line safely, and the bats can crawl through the mesh in the tunnel... <a href="#" onclick="event.preventDefault(); openSourcesPopup('Bat Tunnel', [{name: 'Bat Tunnel - BBC News', url: 'https://www.bbc.co.uk/news/articles/c3dep92x054o'}, {name: 'HS2 Bat Tunnel Not Batproof - Telegraph', url: 'https://www.telegraph.co.uk/news/2024/12/21/hs2s-100m-bat-shield-tunnel-is-not-batproof/'}])">Sources</a>`;
                 } else {
                     explanation = '';
                 }
