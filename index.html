@@ -1733,6 +1733,57 @@
 
             window.projectMapLayers['HS2'] = hs2Layers;
 
+            // A9 Dualling route (Perth to Inverness)
+            const a9Layers = [];
+            const a9Coords = [
+                [56.3896, -3.4878],  // Perth
+                [56.566, -3.584],    // Dunkeld
+                [56.706, -3.733],    // Pitlochry
+                [56.767, -3.850],    // Blair Atholl
+                [56.870, -4.100],    // Drumochter approach
+                [56.934, -4.245],    // Dalwhinnie
+                [57.000, -4.120],    // Newtonmore
+                [57.076, -4.054],    // Kingussie
+                [57.196, -3.828],    // Aviemore
+                [57.280, -3.828],    // Carrbridge
+                [57.350, -3.960],    // Moy
+                [57.4819, -4.1926]   // Inverness
+            ];
+            const a9Route = L.polyline(a9Coords, {
+                color: '#FE5500',
+                weight: 4,
+                opacity: 0.4
+            }).addTo(window.projectMap);
+            a9Route.on('click', function() {
+                const sidebarItem = document.querySelector('.sidebar-item[onclick*="A9"]');
+                if (sidebarItem) selectProject(sidebarItem, 3970000000, 'A9 Dualling');
+            });
+            a9Layers.push(a9Route);
+
+            // Perth marker
+            const perth = [56.3896, -3.4878];
+            const perthMarker = L.circleMarker(perth, {
+                radius: 6, fillColor: '#FE5500', fillOpacity: 0.4, color: '#000000', weight: 2
+            }).addTo(window.projectMap);
+            perthMarker.on('click', function() {
+                const sidebarItem = document.querySelector('.sidebar-item[onclick*="A9"]');
+                if (sidebarItem) selectProject(sidebarItem, 3970000000, 'A9 Dualling');
+            });
+            a9Layers.push(perthMarker);
+
+            // Inverness marker
+            const inverness = [57.4819, -4.1926];
+            const invernessMarker = L.circleMarker(inverness, {
+                radius: 6, fillColor: '#FE5500', fillOpacity: 0.4, color: '#000000', weight: 2
+            }).addTo(window.projectMap);
+            invernessMarker.on('click', function() {
+                const sidebarItem = document.querySelector('.sidebar-item[onclick*="A9"]');
+                if (sidebarItem) selectProject(sidebarItem, 3970000000, 'A9 Dualling');
+            });
+            a9Layers.push(invernessMarker);
+
+            window.projectMapLayers['A9 Dualling'] = a9Layers;
+
             // Fit to England bounds
             window.projectMap.fitBounds(englandLayer.getBounds(), {
                 padding: [10, 10]
