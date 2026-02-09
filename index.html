@@ -1784,6 +1784,19 @@
 
             window.projectMapLayers['A9 Dualling'] = a9Layers;
 
+            // Lower Thames Crossing marker
+            const ltcLayers = [];
+            const ltcPos = [51.4559, 0.4390];
+            const ltcMarker = L.circleMarker(ltcPos, {
+                radius: 6, fillColor: '#FE5500', fillOpacity: 0.4, color: '#000000', weight: 2
+            }).addTo(window.projectMap);
+            ltcMarker.on('click', function() {
+                const sidebarItem = document.querySelector('.sidebar-item[onclick*="Lower Thames"]');
+                if (sidebarItem) selectProject(sidebarItem, 1200000000, 'Lower Thames Crossing');
+            });
+            ltcLayers.push(ltcMarker);
+            window.projectMapLayers['Lower Thames Crossing'] = ltcLayers;
+
             // Fit to mainland UK bounds
             var ukBounds = [[49.9, -6.5], [58.7, 1.8]];
             window.projectMap.fitBounds(ukBounds);
