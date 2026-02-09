@@ -284,6 +284,11 @@
             text-decoration: underline;
         }
 
+        .stat-card-links {
+            display: flex;
+            gap: 24px;
+        }
+
         .stat-card-link {
             color: var(--blue);
             text-decoration: none;
@@ -1189,13 +1194,29 @@
         <div class="stat-card">
             <div class="stat-card-number">£1,277,580</div>
             <div class="stat-card-text">The average UK household's total tax contribution over their lifetime.</div>
-            <a href="https://taxpayersalliance.com/average-household-will-pay-almost-600-000-in-income-tax-over-its-lifetime/" target="_blank" class="stat-card-link">Source</a>
+            <div class="stat-card-links">
+                <a href="https://taxpayersalliance.com/average-household-will-pay-almost-600-000-in-income-tax-over-its-lifetime/" target="_blank" class="stat-card-link">Source</a>
+                <span class="stat-card-link" onclick="openMethodologyPopup()" style="cursor: pointer;">Methodology</span>
+            </div>
         </div>
     </section>
 
-    <footer>
-        <p>Built by <a href="https://lookingforgrowth.uk/" target="_blank">LFG</a> — Looking for Growth</p>
-    </footer>
+    <!-- Methodology Popup -->
+    <div class="sources-popup-overlay" id="methodologyPopupOverlay" onclick="closeMethodologyPopup()">
+        <div class="sources-popup" onclick="event.stopPropagation()" style="max-width: 500px;">
+            <button class="sources-popup-close" onclick="closeMethodologyPopup()">×</button>
+            <h3 class="sources-popup-title">Methodology</h3>
+            <div style="font-size: 15px; line-height: 1.7; color: var(--black);">
+                <p style="margin-bottom: 16px;">The calculator divides the total cost of a government project by the average UK household's lifetime tax contribution:</p>
+                <div style="background: var(--cream); border: 2px solid var(--black); border-radius: 12px; padding: 16px 20px; margin-bottom: 16px; text-align: center;">
+                    <strong>Project Cost ÷ £1,277,580 = Households</strong>
+                </div>
+                <p style="margin-bottom: 16px;">The figure of <strong>£1,277,580</strong> is the average UK household's total tax contribution over a lifetime, sourced from the <a href="https://taxpayersalliance.com/average-household-will-pay-almost-600-000-in-income-tax-over-its-lifetime/" target="_blank" style="color: var(--orange); text-decoration: underline;">TaxPayers' Alliance</a>.</p>
+                <p style="margin-bottom: 16px;">The result is rounded to the nearest whole number. It represents how many households would need to dedicate their entire lifetime of tax payments to fund a single project.</p>
+                <p style="color: #666; font-size: 14px;">Project costs are sourced individually — click "Source" on each project card for details.</p>
+            </div>
+        </div>
+    </div>
 
     <script>
         const HOUSEHOLD_CONTRIBUTION = 1277580;
@@ -1369,6 +1390,16 @@
             document.body.style.overflow = '';
         }
 
+        function openMethodologyPopup() {
+            document.getElementById('methodologyPopupOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMethodologyPopup() {
+            document.getElementById('methodologyPopupOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
         document.getElementById('customAmount').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 calculateCustom();
@@ -1385,6 +1416,7 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeSourcesPopup();
+                closeMethodologyPopup();
             }
         });
 
