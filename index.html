@@ -1020,9 +1020,109 @@
                 font-size: 20px;
             }
         }
+        /* Fish Disco */
+        .disco-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 3000;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .disco-overlay.active {
+            display: block;
+            animation: discoFade 5s forwards;
+        }
+
+        @keyframes discoFade {
+            0% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .disco-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            animation: discoBg 0.4s infinite;
+            opacity: 0.15;
+        }
+
+        @keyframes discoBg {
+            0% { background: #FF00FF; }
+            16% { background: #00FFFF; }
+            33% { background: #FFFF00; }
+            50% { background: #FF6600; }
+            66% { background: #00FF00; }
+            83% { background: #FF0066; }
+            100% { background: #FF00FF; }
+        }
+
+        .disco-ball {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 60px;
+            animation: discoBallDrop 0.6s ease-out forwards;
+            z-index: 2;
+        }
+
+        @keyframes discoBallDrop {
+            from { top: -60px; }
+            to { top: 20px; }
+        }
+
+        .disco-fish {
+            position: absolute;
+            font-size: 40px;
+            animation-timing-function: linear;
+            animation-fill-mode: forwards;
+            z-index: 1;
+        }
+
+        @keyframes fishSwimRight {
+            0% { transform: translateX(-80px) rotate(0deg) scaleX(1); }
+            25% { transform: translateX(25vw) rotate(-15deg) scaleX(1); }
+            50% { transform: translateX(50vw) rotate(10deg) scaleX(1); }
+            75% { transform: translateX(75vw) rotate(-10deg) scaleX(1); }
+            100% { transform: translateX(105vw) rotate(5deg) scaleX(1); }
+        }
+
+        @keyframes fishSwimLeft {
+            0% { transform: translateX(105vw) rotate(0deg) scaleX(-1); }
+            25% { transform: translateX(75vw) rotate(15deg) scaleX(-1); }
+            50% { transform: translateX(50vw) rotate(-10deg) scaleX(-1); }
+            75% { transform: translateX(25vw) rotate(10deg) scaleX(-1); }
+            100% { transform: translateX(-80px) rotate(-5deg) scaleX(-1); }
+        }
+
+        .disco-sparkle {
+            position: absolute;
+            font-size: 20px;
+            animation: sparkle 0.8s ease-out forwards;
+            z-index: 1;
+        }
+
+        @keyframes sparkle {
+            0% { opacity: 1; transform: scale(0) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.5) rotate(180deg); }
+            100% { opacity: 0; transform: scale(0.5) rotate(360deg); }
+        }
     </style>
 </head>
 <body>
+    <!-- Fish Disco Overlay -->
+    <div class="disco-overlay" id="discoOverlay">
+        <div class="disco-bg"></div>
+    </div>
+
     <header>
         <div class="header-container">
             <a href="https://lookingforgrowth.uk/" class="logo">LFG</a>
@@ -1257,7 +1357,67 @@
             btn.classList.add('active');
             document.getElementById('customAmount').value = '';
             document.getElementById('customName').value = '';
+            if (projectName === 'Fish Disco') {
+                launchFishDisco();
+            }
             showResult(amount, projectName);
+        }
+
+        function launchFishDisco() {
+            const overlay = document.getElementById('discoOverlay');
+            // Clear previous fish
+            overlay.querySelectorAll('.disco-fish, .disco-ball, .disco-sparkle').forEach(el => el.remove());
+            overlay.classList.remove('active');
+            void overlay.offsetWidth; // force reflow
+            overlay.classList.add('active');
+
+            // Drop a disco ball
+            const ball = document.createElement('div');
+            ball.className = 'disco-ball';
+            ball.textContent = '\uD83E\uDEA9';
+            overlay.appendChild(ball);
+
+            // Spawn fish in waves
+            const fishEmojis = ['\uD83D\uDC1F', '\uD83D\uDC20', '\uD83D\uDC21', '\uD83E\uDD88', '\uD83D\uDC19', '\uD83E\uDD91'];
+            const totalFish = 25;
+
+            for (let i = 0; i < totalFish; i++) {
+                setTimeout(() => {
+                    const fish = document.createElement('div');
+                    fish.className = 'disco-fish';
+                    fish.textContent = fishEmojis[Math.floor(Math.random() * fishEmojis.length)];
+                    fish.style.top = (Math.random() * 85 + 5) + 'vh';
+                    fish.style.fontSize = (Math.random() * 30 + 25) + 'px';
+
+                    const goRight = Math.random() > 0.5;
+                    const duration = (Math.random() * 2 + 2) + 's';
+                    fish.style.animationName = goRight ? 'fishSwimRight' : 'fishSwimLeft';
+                    fish.style.animationDuration = duration;
+
+                    overlay.appendChild(fish);
+
+                    fish.addEventListener('animationend', () => fish.remove());
+                }, Math.random() * 3500);
+            }
+
+            // Spawn sparkles
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'disco-sparkle';
+                    sparkle.textContent = '\u2728';
+                    sparkle.style.top = (Math.random() * 90 + 5) + 'vh';
+                    sparkle.style.left = (Math.random() * 90 + 5) + 'vw';
+                    overlay.appendChild(sparkle);
+                    sparkle.addEventListener('animationend', () => sparkle.remove());
+                }, Math.random() * 4000);
+            }
+
+            // Clean up after animation
+            setTimeout(() => {
+                overlay.classList.remove('active');
+                overlay.querySelectorAll('.disco-fish, .disco-ball, .disco-sparkle').forEach(el => el.remove());
+            }, 5500);
         }
 
         function calculateCustom() {
