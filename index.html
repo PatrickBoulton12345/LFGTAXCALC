@@ -1188,6 +1188,12 @@
                 </div>
             </div>
         </div>
+
+        <!-- Why Card -->
+        <div class="share-follow-card" id="whyCard" style="display: none;">
+            <h3 style="font-family: 'Octarine', 'DM Sans', sans-serif; font-weight: 700; font-size: 24px; color: var(--black); margin-bottom: 16px;">Why does it cost this much?</h3>
+            <p style="font-size: 16px; line-height: 1.7; color: #444;">The United Kingdom is building the world's most expensive railway and nuclear power plant. This is not coincidence. We have engineered a needlessly complicated planning system which prioritises process over outcomes. £100 million on a bat tunnel. £700 million to save one salmon a year. This is not normal.</p>
+        </div>
     </main>
 
     <section class="stat-section">
@@ -1311,6 +1317,7 @@
             
             resultsSection.classList.add('active');
             document.getElementById('shareFollowCard').style.display = 'block';
+            document.getElementById('whyCard').style.display = 'block';
 
             setTimeout(() => {
                 resultsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
