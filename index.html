@@ -783,37 +783,6 @@
                 font-size: 36px;
             }
 
-            .map-tabs {
-                display: flex;
-            }
-
-            .map-layout {
-                flex-direction: column;
-                height: auto;
-            }
-
-            .map-panel {
-                height: auto;
-                flex: none;
-            }
-
-            #projectMap {
-                height: 350px;
-            }
-
-            .sidebar-panel {
-                display: none;
-                height: auto;
-            }
-
-            .sidebar-panel.show-mobile {
-                display: flex;
-            }
-
-            .map-panel.hidden {
-                display: none;
-            }
-
             .results-section {
                 padding: 40px 24px;
             }
@@ -1088,6 +1057,41 @@
 
         .leaflet-control-attribution {
             display: none !important;
+        }
+
+        /* Map + Sidebar mobile overrides (must come after desktop styles) */
+        @media (max-width: 900px) {
+            .map-tabs {
+                display: flex;
+            }
+
+            .map-layout {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .map-panel {
+                height: auto;
+                flex: none;
+            }
+
+            #projectMap {
+                height: 350px;
+            }
+
+            .sidebar-panel {
+                display: none;
+                height: auto;
+                width: 100%;
+            }
+
+            .sidebar-panel.show-mobile {
+                display: flex;
+            }
+
+            .map-panel.hidden {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -1679,11 +1683,7 @@
                 fillOpacity: 1,
                 color: '#000000',
                 weight: 2
-            }).addTo(window.projectMap).bindTooltip('London Euston', {
-                permanent: true,
-                direction: 'bottom',
-                offset: [0, 8]
-            });
+            }).addTo(window.projectMap);
             londonMarker.on('click', function() {
                 const sidebarItem = document.querySelector('.sidebar-item[onclick*="HS2"]');
                 if (sidebarItem) selectProject(sidebarItem, 40200000000, 'HS2');
@@ -1698,11 +1698,7 @@
                 fillOpacity: 1,
                 color: '#000000',
                 weight: 2
-            }).addTo(window.projectMap).bindTooltip('Birmingham Curzon St', {
-                permanent: true,
-                direction: 'top',
-                offset: [0, -8]
-            });
+            }).addTo(window.projectMap);
             birminghamMarker.on('click', function() {
                 const sidebarItem = document.querySelector('.sidebar-item[onclick*="HS2"]');
                 if (sidebarItem) selectProject(sidebarItem, 40200000000, 'HS2');
