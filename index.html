@@ -1055,6 +1055,24 @@
             border-bottom-color: var(--black);
         }
 
+        .project-label {
+            background: var(--black);
+            color: white;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            border: none;
+            border-radius: 6px;
+            padding: 4px 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            white-space: nowrap;
+        }
+
+        .project-label::before {
+            border-left-color: var(--black);
+            border-right-color: var(--black);
+        }
+
         .leaflet-control-attribution {
             display: none !important;
         }
@@ -1724,7 +1742,12 @@
                 fillOpacity: 1,
                 color: '#000000',
                 weight: 2
-            }).addTo(window.projectMap);
+            }).addTo(window.projectMap).bindTooltip('HS2', {
+                permanent: true,
+                direction: 'left',
+                offset: [-12, 0],
+                className: 'project-label'
+            });
             birminghamMarker.on('click', function() {
                 const sidebarItem = document.querySelector('.sidebar-item[onclick*="HS2"]');
                 if (sidebarItem) selectProject(sidebarItem, 40200000000, 'HS2');
@@ -1775,7 +1798,12 @@
             const inverness = [57.4819, -4.1926];
             const invernessMarker = L.circleMarker(inverness, {
                 radius: 6, fillColor: '#FE5500', fillOpacity: 0.4, color: '#000000', weight: 2
-            }).addTo(window.projectMap);
+            }).addTo(window.projectMap).bindTooltip('A9 Dualling', {
+                permanent: true,
+                direction: 'left',
+                offset: [-10, 0],
+                className: 'project-label'
+            });
             invernessMarker.on('click', function() {
                 const sidebarItem = document.querySelector('.sidebar-item[onclick*="A9"]');
                 if (sidebarItem) selectProject(sidebarItem, 3970000000, 'A9 Dualling');
@@ -1789,7 +1817,12 @@
             const ltcPos = [51.4559, 0.4390];
             const ltcMarker = L.circleMarker(ltcPos, {
                 radius: 6, fillColor: '#FE5500', fillOpacity: 0.4, color: '#000000', weight: 2
-            }).addTo(window.projectMap);
+            }).addTo(window.projectMap).bindTooltip('Lower Thames Crossing', {
+                permanent: true,
+                direction: 'right',
+                offset: [10, 0],
+                className: 'project-label'
+            });
             ltcMarker.on('click', function() {
                 const sidebarItem = document.querySelector('.sidebar-item[onclick*="Lower Thames"]');
                 if (sidebarItem) selectProject(sidebarItem, 1200000000, 'Lower Thames Crossing');
