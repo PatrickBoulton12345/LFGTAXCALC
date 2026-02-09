@@ -794,14 +794,19 @@
 
             .map-panel {
                 height: 400px;
+                flex: none;
             }
 
             .sidebar-panel {
+                display: none;
                 height: auto;
             }
 
-            .map-panel.hidden,
-            .sidebar-panel.hidden {
+            .sidebar-panel.show-mobile {
+                display: flex;
+            }
+
+            .map-panel.hidden {
                 display: none;
             }
 
@@ -997,6 +1002,7 @@
         .map-panel {
             flex: 1;
             min-width: 0;
+            height: 100%;
         }
 
         #projectMap {
@@ -1367,14 +1373,14 @@
             if (tab === 'map') {
                 tabs[0].classList.add('active');
                 mapPanel.classList.remove('hidden');
-                sidebarPanel.classList.add('hidden');
+                sidebarPanel.classList.remove('show-mobile');
                 if (window.projectMap) {
-                    window.projectMap.invalidateSize();
+                    setTimeout(function() { window.projectMap.invalidateSize(); }, 50);
                 }
             } else {
                 tabs[1].classList.add('active');
                 mapPanel.classList.add('hidden');
-                sidebarPanel.classList.remove('hidden');
+                sidebarPanel.classList.add('show-mobile');
             }
         }
 
@@ -1701,6 +1707,14 @@
             window.projectMap.fitBounds(englandLayer.getBounds(), {
                 padding: [10, 10]
             });
+
+            // Leaflet needs invalidateSize when container is sized by flex
+            setTimeout(function() {
+                window.projectMap.invalidateSize();
+                window.projectMap.fitBounds(englandLayer.getBounds(), {
+                    padding: [10, 10]
+                });
+            }, 100);
         }
 
         // Initialize map on page load
