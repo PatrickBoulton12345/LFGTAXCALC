@@ -430,6 +430,8 @@
             color: #555;
             line-height: 1.5;
             transition: color 0.3s ease;
+            flex-grow: 1;
+            width: 100%;
         }
 
         .project-description .emphasis {
@@ -452,7 +454,7 @@
         }
 
         .project-description .read-more-content.show {
-            display: inline;
+            display: block;
         }
 
         .project-card:hover .read-more-toggle,
@@ -482,6 +484,9 @@
             cursor: pointer;
             font-weight: 500;
             text-decoration: underline;
+            display: block;
+            text-align: right;
+            margin-top: 8px;
         }
 
         .project-card:hover .sources-link,
