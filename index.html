@@ -1115,12 +1115,108 @@
             50% { opacity: 1; transform: scale(1.5) rotate(180deg); }
             100% { opacity: 0; transform: scale(0.5) rotate(360deg); }
         }
+        /* Bat Tunnel */
+        .bat-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 3000;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bat-overlay.active {
+            display: block;
+            animation: batFade 5s forwards;
+        }
+
+        @keyframes batFade {
+            0% { opacity: 0; }
+            5% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .bat-night-sky {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, #0a0a2e 0%, #1a1a4e 40%, #2d1b4e 100%);
+            opacity: 0.85;
+        }
+
+        .bat-moon {
+            position: absolute;
+            top: 40px;
+            right: 12%;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fffde7 0%, #fdd835 60%, #f9a825 100%);
+            box-shadow: 0 0 60px 20px rgba(253, 216, 53, 0.3), 0 0 120px 40px rgba(253, 216, 53, 0.1);
+            animation: moonGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes moonGlow {
+            from { box-shadow: 0 0 60px 20px rgba(253, 216, 53, 0.3), 0 0 120px 40px rgba(253, 216, 53, 0.1); }
+            to { box-shadow: 0 0 80px 30px rgba(253, 216, 53, 0.4), 0 0 150px 50px rgba(253, 216, 53, 0.15); }
+        }
+
+        .bat-emoji {
+            position: absolute;
+            font-size: 40px;
+            animation-timing-function: ease-in-out;
+            animation-fill-mode: forwards;
+            z-index: 1;
+        }
+
+        @keyframes batFlyRight {
+            0% { transform: translateX(-60px) translateY(0) rotate(-5deg); }
+            20% { transform: translateX(20vw) translateY(-30px) rotate(5deg); }
+            40% { transform: translateX(40vw) translateY(15px) rotate(-8deg); }
+            60% { transform: translateX(60vw) translateY(-20px) rotate(3deg); }
+            80% { transform: translateX(80vw) translateY(10px) rotate(-5deg); }
+            100% { transform: translateX(110vw) translateY(-10px) rotate(5deg); }
+        }
+
+        @keyframes batFlyLeft {
+            0% { transform: translateX(110vw) translateY(0) scaleX(-1) rotate(-5deg); }
+            20% { transform: translateX(80vw) translateY(-25px) scaleX(-1) rotate(5deg); }
+            40% { transform: translateX(55vw) translateY(20px) scaleX(-1) rotate(-8deg); }
+            60% { transform: translateX(35vw) translateY(-15px) scaleX(-1) rotate(3deg); }
+            80% { transform: translateX(15vw) translateY(10px) scaleX(-1) rotate(-5deg); }
+            100% { transform: translateX(-60px) translateY(-10px) scaleX(-1) rotate(5deg); }
+        }
+
+        .bat-star {
+            position: absolute;
+            color: white;
+            font-size: 14px;
+            animation: starTwinkle 1.5s ease-in-out infinite alternate;
+            z-index: 0;
+        }
+
+        @keyframes starTwinkle {
+            from { opacity: 0.3; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1.2); }
+        }
     </style>
 </head>
 <body>
     <!-- Fish Disco Overlay -->
     <div class="disco-overlay" id="discoOverlay">
         <div class="disco-bg"></div>
+    </div>
+
+    <!-- Bat Tunnel Overlay -->
+    <div class="bat-overlay" id="batOverlay">
+        <div class="bat-night-sky"></div>
+        <div class="bat-moon"></div>
     </div>
 
     <header>
@@ -1359,6 +1455,8 @@
             document.getElementById('customName').value = '';
             if (projectName === 'Fish Disco') {
                 launchFishDisco();
+            } else if (projectName === 'Bat Tunnel') {
+                launchBatTunnel();
             }
             showResult(amount, projectName);
         }
@@ -1417,6 +1515,52 @@
             setTimeout(() => {
                 overlay.classList.remove('active');
                 overlay.querySelectorAll('.disco-fish, .disco-ball, .disco-sparkle').forEach(el => el.remove());
+            }, 5500);
+        }
+
+        function launchBatTunnel() {
+            const overlay = document.getElementById('batOverlay');
+            overlay.querySelectorAll('.bat-emoji, .bat-star').forEach(el => el.remove());
+            overlay.classList.remove('active');
+            void overlay.offsetWidth;
+            overlay.classList.add('active');
+
+            // Spawn twinkling stars
+            for (let i = 0; i < 40; i++) {
+                const star = document.createElement('div');
+                star.className = 'bat-star';
+                star.textContent = '\u2B50';
+                star.style.top = (Math.random() * 60) + 'vh';
+                star.style.left = (Math.random() * 95) + 'vw';
+                star.style.fontSize = (Math.random() * 10 + 8) + 'px';
+                star.style.animationDelay = (Math.random() * 2) + 's';
+                overlay.appendChild(star);
+            }
+
+            // Spawn bats in waves
+            const totalBats = 20;
+            for (let i = 0; i < totalBats; i++) {
+                setTimeout(() => {
+                    const bat = document.createElement('div');
+                    bat.className = 'bat-emoji';
+                    bat.textContent = '\uD83E\uDD87';
+                    bat.style.top = (Math.random() * 75 + 5) + 'vh';
+                    bat.style.fontSize = (Math.random() * 25 + 25) + 'px';
+
+                    const goRight = Math.random() > 0.5;
+                    const duration = (Math.random() * 2 + 2.5) + 's';
+                    bat.style.animationName = goRight ? 'batFlyRight' : 'batFlyLeft';
+                    bat.style.animationDuration = duration;
+
+                    overlay.appendChild(bat);
+                    bat.addEventListener('animationend', () => bat.remove());
+                }, Math.random() * 3500);
+            }
+
+            // Clean up
+            setTimeout(() => {
+                overlay.classList.remove('active');
+                overlay.querySelectorAll('.bat-emoji, .bat-star').forEach(el => el.remove());
             }, 5500);
         }
 
