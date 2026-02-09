@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Household Tax Calculator | LFG</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Octarine';
+            src: url('https://fonts.cdnfonts.com/s/29876/Octarine-Bold.woff') format('woff');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #000000;
+            --orange: #FE5500;
+            --yellow: #EE9944;
+            --blue: #79CAC4;
+            --cream: #EBE3D0;
+            --dark-cream: #DED6C3;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: white;
+            min-height: 100vh;
+            color: var(--black);
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--blue);
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--black);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+
+        .logo {
+            font-family: 'Octarine', 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            color: var(--black);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .desktop-nav {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .desktop-nav a {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 400;
+            font-size: 15px;
+            color: var(--black);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .desktop-nav a:hover {
+            opacity: 0.7;
+        }
+
+        .donate-btn {
+            background-color: var(--yellow);
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-weight: 700 !important;
+            transition: transform 0.2s ease;
+        }
+
+        .donate-btn:hover {
+            transform: scale(1.05);
+            opacity: 1 !important;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+            padding: 10px;
+        }
+
+        .hamburger span {
+            width: 24px;
+            height: 2px;
+            background-color: var(--black);
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: white;
+            z-index: 999;
+            padding: 80px 24px 40px;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.active {
+            display: flex;
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            font-size: 32px;
+            cursor: pointer;
+            color: var(--black);
+            background: none;
+            border: none;
+            font-weight: 300;
+        }
+
+        .mobile-menu a {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--black);
+            text-decoration: none;
+            padding: 16px 0;
+            display: block;
+        }
+
+        .mobile-menu-bottom {
+            margin-top: auto;
+            padding-top: 40px;
+        }
+
+        .mobile-menu-bottom a {
+            font-size: 32px;
+            font-weight: 700;
+            text-decoration: underline;
+            text-decoration-color: var(--orange);
+            text-underline-offset: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mobile-menu-bottom a::after {
+            content: '→';
+            font-size: 28px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--cream);
+            color: var(--black);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-border {
+            height: 4px;
+            background: var(--black);
+            width: 100%;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 70px 24px 60px;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Octarine', 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: clamp(36px, 8vw, 64px);
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: var(--black);
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--black);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        .stat-section {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px 60px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 3px solid var(--black);
+            border-radius: 24px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            text-align: center;
+        }
+
+        .stat-card-number {
+            font-family: 'Octarine', 'DM Sans', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--yellow);
+        }
+
+        .stat-card-text {
+            font-size: 18px;
+            line-height: 1.5;
+            color: var(--black);
+        }
+
+        .stat-card-text a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .stat-card-text a:hover {
+            text-decoration: underline;
+        }
+
+        .stat-card-link {
+            color: var(--blue);
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .stat-card-link:hover {
+            text-decoration: underline;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .section-number {
+            width: 48px;
+            height: 48px;
+            background: var(--black);
+            color: white;
+            font-family: 'Octarine', 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .section-title {
+            font-family: 'Octarine', 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            color: var(--black);
+        }
+
+        .section-instruction {
+            text-align: left;
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        /* Project Cards */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 60px;
+        }
+
+        .project-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 12px;
+            padding: 32px 24px;
+            background: white;
+            border: 3px solid var(--black);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--orange);
+            transform: translateX(-101%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .project-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .project-card.active {
+            border-color: var(--orange);
+            background: var(--orange);
+        }
+
+        .project-card.active::before {
+            transform: translateX(0);
+        }
+
+        .project-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-card:hover .project-name,
+        .project-card:hover .project-amount,
+        .project-card.active .project-name,
+        .project-card.active .project-amount {
+            color: white;
+        }
+
+        .project-card:hover .project-description,
+        .project-card.active .project-description {
+            color: rgba(255,255,255,0.85);
+        }
+
+        .project-card:hover .project-description a,
+        .project-card.active .project-description a {
+            color: white;
+        }
+
+        .project-amount {
+            font-family: 'Octarine', 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 42px;
+            color: var(--orange);
+            white-space: nowrap;
+            transition: color 0.3s ease;
+            line-height: 1;
+        }
+
+        .project-name {
+            font-family: 'Octarine', 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 32px;
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .project-description {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.5;
+            transition: color 0.3s ease;
+        }
+
+        .project-description .emphasis {
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        .project-description .read-more-toggle {
+            color: var(--orange);
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .project-description .read-more-toggle:hover {
+            text-decoration: underline;
+        }
+
+        .project-description .read-more-content {
+            display: none;
+        }
+
+        .project-description .read-more-content.show {
+            display: inline;
+        }
+
+        .project-card:hover .read-more-toggle,
+        .project-card.active .read-more-toggle {
+            color: white;
+        }
+
+        .project-description .read-less-toggle {
+            color: var(--orange);
+            cursor: pointer;
+            font-weight: 500;
+            display: block;
+            margin-top: 8px;
+        }
+
+        .project-description .read-less-toggle:hover {
+            text-decoration: underline;
+        }
+
+        .project-card:hover .read-less-toggle,
+        .project-card.active .read-less-toggle {
+            color: white;
+        }
+
+        .project-description .sources-link {
+            color: var(--orange);
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: underline;
+        }
+
+        .project-card:hover .sources-link,
+        .project-card.active .sources-link {
+            color: white;
+        }
+
+        /* Sources Popup */
+        .sources-popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .sources-popup-overlay.active {
+            display: flex;
+        }
+
+        .sources-popup {
+            background: white;
+            border: 3px solid var(--black);
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+        }
+
+        .sources-popup-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--black);
+            line-height: 1;
+        }
+
+        .sources-popup-title {
+            font-family: 'Octarine', 'DM Sans', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--black);
+        }
+
+        .sources-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .source-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: var(--cream);
+            border: 2px solid var(--black);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--black);
+            transition: all 0.2s ease;
+        }
+
+        .source-item:hover {
+            background: var(--blue);
+            transform: translateX(4px);
+        }
+
+        .source-name {
+            font-weight: 500;
+        }
+
+        .source-arrow {
+            font-size: 18px;
+        }
+
+        .project-description a {
+            color: var(--orange);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .project-description a:hover {
+            text-decoration: underline;
+        }
+
+        .project-amount {
+            font-family: 'Octarine', 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 32px;
+            color: var(--orange);
+            white-space: nowrap;
+            transition: color 0.3s ease;
+            margin-left: auto;
+        }
+
+        /* Custom Input Section */
+        .custom-section {
+            background: white;
+            border: 3px solid var(--black);
+            border-radius: 24px;
+            padding: 40px 32px;
+            margin-bottom: 60px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            align-items: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .input-wrapper {
+            width: 100%;
+            text-align: center;
+        }
+
+        .input-label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 16px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 20px 24px;
+            font-size: 20px;
+            font-family: 'DM Sans', sans-serif;
+            border: 3px solid var(--black);
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            background: var(--cream);
+            text-align: center;
+        }
+
+        .input-field-text {
+            font-size: 18px;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--blue);
+            background: white;
+        }
+
+        .input-field::placeholder {
+            color: #999;
+            font-weight: 400;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 18px;
+        }
+
+        .calculate-btn {
+            background-color: var(--black);
+            color: white;
+            border: 3px solid var(--black);
+            padding: 20px 60px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            width: 100%;
+        }
+
+        .calculate-btn:hover {
+            background-color: var(--orange);
+            border-color: var(--orange);
+            transform: scale(1.02);
+        }
+
+        /* Results Section */
+        .results-section {
+            background: var(--blue);
+            border: 3px solid var(--black);
+            border-radius: 24px;
+            padding: 60px 40px;
+            text-align: center;
+            display: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .results-section.active {
+            display: block;
+            animation: resultPop 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes resultPop {
+            0% { 
+                opacity: 0; 
+                transform: scale(0.9); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: scale(1); 
+            }
+        }
+
+        .results-inner {
+            position: relative;
+            z-index: 1;
+        }
+
+        .result-project {
+            font-family: 'Octarine', 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 32px;
+            margin-bottom: 24px;
+            color: var(--black);
+            padding-bottom: 24px;
+            border-bottom: 2px solid rgba(0,0,0,0.1);
+        }
+
+        .result-number-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .result-number {
+            font-family: 'Octarine', 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: clamp(48px, 10vw, 80px);
+            color: var(--black);
+            line-height: 1;
+        }
+
+        .result-households {
+            font-family: 'Octarine', 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: clamp(24px, 4vw, 36px);
+            color: var(--black);
+        }
+
+        .result-unit {
+            font-size: 20px;
+            font-weight: 400;
+            color: var(--black);
+            margin-bottom: 8px;
+        }
+
+        .result-unit strong {
+            font-weight: 700;
+        }
+
+        .result-unit u {
+            text-decoration: underline;
+        }
+
+        .result-yours {
+            font-size: 20px;
+            font-weight: 400;
+            color: var(--black);
+            margin-bottom: 20px;
+        }
+
+        .result-yours strong {
+            font-weight: 700;
+        }
+
+        .result-box {
+            border-radius: 12px;
+            padding: 0 24px 24px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .result-explanation {
+            font-size: 18px;
+            color: var(--black);
+            line-height: 1.6;
+        }
+
+        .result-explanation strong {
+            color: var(--black);
+            font-weight: 700;
+        }
+
+        .result-explanation u {
+            text-decoration: underline;
+        }
+
+        .result-explanation a {
+            color: var(--black);
+            text-decoration: underline;
+        }
+
+        /* Share Section */
+        .share-section {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 2px solid rgba(0,0,0,0.1);
+        }
+
+        .share-label {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+            color: var(--black);
+        }
+
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid var(--black);
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            color: var(--black);
+        }
+
+        .share-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .share-btn.share-x:hover {
+            background: var(--black);
+            color: white;
+        }
+
+        .share-btn.share-facebook:hover {
+            background: #1877F2;
+            border-color: #1877F2;
+            color: white;
+        }
+
+        .share-btn.share-linkedin:hover {
+            background: #0A66C2;
+            border-color: #0A66C2;
+            color: white;
+        }
+
+        .share-btn.share-whatsapp:hover {
+            background: #25D366;
+            border-color: #25D366;
+            color: white;
+        }
+
+        .share-btn.share-copy:hover {
+            background: var(--orange);
+            border-color: var(--orange);
+            color: white;
+        }
+
+        .copy-feedback {
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--black);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .copy-feedback.show {
+            opacity: 1;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--black);
+            color: white;
+            text-align: center;
+            padding: 40px 24px;
+            font-size: 14px;
+        }
+
+        footer a {
+            color: var(--yellow);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 900px) {
+            .desktop-nav {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .stat-card {
+                padding: 32px 24px;
+            }
+
+            .stat-card-number {
+                font-size: 36px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-card {
+                padding: 28px 20px;
+            }
+
+            .project-amount {
+                font-size: 36px;
+            }
+
+            .project-name {
+                font-size: 28px;
+            }
+
+            .results-section {
+                padding: 40px 24px;
+            }
+
+            .result-number-row {
+                flex-direction: row;
+                gap: 12px;
+                justify-content: center;
+                text-align: center;
+            }
+
+            .result-number {
+                font-size: 48px;
+            }
+
+            .result-households {
+                font-size: 22px;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .custom-section {
+                padding: 32px 24px;
+            }
+
+            .share-buttons {
+                gap: 8px;
+            }
+
+            .share-btn {
+                width: 44px;
+                height: 44px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .result-number-row {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .result-number {
+                font-size: 44px;
+            }
+
+            .result-households {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="https://lookingforgrowth.uk/" class="logo">LFG</a>
+            <nav class="desktop-nav">
+                <a href="https://dashboards.lookingforgrowth.uk/youth-unemployment-dashboard.html">Youth Unemployment</a>
+                <a href="https://dashboards.lookingforgrowth.uk/dashboards/opinion-tracker">Opinion Tracker</a>
+                <a href="https://dashboards.lookingforgrowth.uk/dashboards/energy-costs/">Energy Costs</a>
+                <a href="https://dashboards.lookingforgrowth.uk/dashboards/state-of-the-nation">State of the Nation</a>
+                <a href="https://dashboards.lookingforgrowth.uk/dashboards/no-more-delays/">No More Delays</a>
+                <a href="https://dashboards.lookingforgrowth.uk/dashboards/planning-applications/admin-ongoing/">Planning Applications</a>
+                <a href="https://dashboards.lookingforgrowth.uk/dirtydashboard/">Dirty Dashboard</a>
+                <a href="https://merch.lookingforgrowth.uk/">Merch</a>
+                <a href="https://lookingforgrowth.uk/donate" class="donate-btn">donate</a>
+            </nav>
+            <div class="hamburger" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" onclick="toggleMobileMenu()">×</button>
+        <a href="https://dashboards.lookingforgrowth.uk/youth-unemployment-dashboard.html">Youth Unemployment</a>
+        <a href="https://dashboards.lookingforgrowth.uk/dashboards/opinion-tracker">Opinion Tracker</a>
+        <a href="https://dashboards.lookingforgrowth.uk/dashboards/energy-costs/">Energy Costs</a>
+        <a href="https://dashboards.lookingforgrowth.uk/dashboards/state-of-the-nation">State of the Nation</a>
+        <a href="https://dashboards.lookingforgrowth.uk/dashboards/no-more-delays/">No More Delays</a>
+        <a href="https://dashboards.lookingforgrowth.uk/dashboards/planning-applications/admin-ongoing/">Planning Applications</a>
+        <a href="https://dashboards.lookingforgrowth.uk/dirtydashboard/">Dirty Dashboard</a>
+        <div class="mobile-menu-bottom">
+            <a href="https://lookingforgrowth.uk/donate">donate</a>
+            <a href="https://merch.lookingforgrowth.uk/">buy our merch</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-border"></div>
+        <div class="hero-content">
+            <h1>Tax Tracker</h1>
+            <p class="hero-subtitle">See how much of your taxes have been spent on everything from bat tunnels to quangos.</p>
+        </div>
+        <div class="hero-border"></div>
+    </section>
+
+    <main>
+        <div class="section-header">
+            <span class="section-number">1</span>
+            <h2 class="section-title">Select a government project</h2>
+        </div>
+        <p class="section-instruction">Click on a project below to see how many households are paying for it</p>
+
+        <div class="projects-grid">
+            <button class="project-card" onclick="selectPreset(this, 40200000000, 'HS2')">
+                <div class="project-amount">£40.2bn</div>
+                <div class="project-name">HS2</div>
+                <div class="project-description">Has cost £40.2bn so far. Spain built Barcelona to Madrid high-speed rail for £17bn. <span class="sources-link" onclick="event.stopPropagation(); openSourcesPopup('HS2', [{name: 'HS2 6-monthly report to Parliament', url: 'https://www.gov.uk/government/speeches/hs2-6-monthly-report-to-parliament-july-2025'}])">Source</span></div>
+            </button>
+
+            <button class="project-card" onclick="selectPreset(this, 3970000000, 'A9 Dualling')">
+                <div class="project-amount">£3.97bn</div>
+                <div class="project-name">A9 Dualling</div>
+                <div class="project-description">Scottish road upgrade connecting Perth to Inverness, and it's <span class="emphasis">TEN</span> years overdue. Due to finish in 2035. <span class="sources-link" onclick="event.stopPropagation(); openSourcesPopup('A9 Dualling', [{name: 'A9 Dualling - BBC News', url: 'https://www.bbc.co.uk/news/uk-scotland-highlands-islands-67771630'}, {name: 'A9 Dualling Programme Overview', url: 'https://www.a9dualling.scot/a9-dualling/programme-overview/'}])">Sources</span></div>
+            </button>
+
+            <button class="project-card" onclick="selectPreset(this, 1200000000, 'Lower Thames Crossing')">
+                <div class="project-amount">£1.2bn</div>
+                <div class="project-name">Lower Thames Crossing</div>
+                <div class="project-description">So far, the Lower Thames Crossing has cost £1.2 <span class="emphasis">BILLION</span>. Despite this colossal spend, not a <span class="emphasis">SINGLE</span> metre has actually been built. <span class="read-more-toggle" onclick="event.stopPropagation(); toggleReadMore(this)">Read more...</span><span class="read-more-content"> Norway built the world's longest road tunnel for just £98 million. This means on just <span class="emphasis">PLANNING</span> alone Norway could have built <span class="emphasis">TWELVE</span> tunnels. <span class="sources-link" onclick="event.stopPropagation(); openSourcesPopup('Lower Thames Crossing', [{name: '£1.2bn Lower Thames Crossing', url: 'https://www.ft.com/content/917d4b7f-318e-46fe-ba44-664551ebcf13'}, {name: 'Norwegian Tunnel £98 million', url: 'https://www.mirror.co.uk/travel/incredible-98m-tunnel-worlds-longest-34256712'}])">Sources</span> <span class="read-less-toggle" onclick="event.stopPropagation(); closeReadMore(this)">Read less</span></span></div>
+            </button>
+
+            <button class="project-card" onclick="selectPreset(this, 700000000, 'Fish Disco')">
+                <div class="project-amount">£700m</div>
+                <div class="project-name">Fish Disco</div>
+                <div class="project-description">Will cost £700m after 'vegetable lobby' pressure. Saves one salmon every ... <span class="emphasis">TWELVE</span> years. <span class="sources-link" onclick="event.stopPropagation(); openSourcesPopup('Fish Disco', [{name: 'Fish Disco - iNews Investigation', url: 'https://inews.co.uk/news/politics/700m-fish-disco-saving-one-salmon-every-12-years-4060892'}])">Source</span></div>
+            </button>
+
+            <button class="project-card" onclick="selectPreset(this, 100000000, 'Bat Tunnel')">
+                <div class="project-amount">£100m</div>
+                <div class="project-name">Bat Tunnel</div>
+                <div class="project-description">A tunnel built to help bats cross a railway line safely, and the bats can crawl through the mesh in the tunnel... <span class="sources-link" onclick="event.stopPropagation(); openSourcesPopup('Bat Tunnel', [{name: 'Bat Tunnel - BBC News', url: 'https://www.bbc.co.uk/news/articles/c3dep92x054o'}, {name: 'HS2 Bat Tunnel Not Batproof - Telegraph', url: 'https://www.telegraph.co.uk/news/2024/12/21/hs2s-100m-bat-shield-tunnel-is-not-batproof/'}])">Sources</span></div>
+            </button>
+        </div>
+
+        <!-- Sources Popup -->
+        <div class="sources-popup-overlay" id="sourcesPopupOverlay" onclick="closeSourcesPopup()">
+            <div class="sources-popup" onclick="event.stopPropagation()">
+                <button class="sources-popup-close" onclick="closeSourcesPopup()">×</button>
+                <h3 class="sources-popup-title" id="sourcesPopupTitle">Sources</h3>
+                <div class="sources-list" id="sourcesList">
+                </div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <span class="section-number">2</span>
+            <h2 class="section-title">Or enter your own figure</h2>
+        </div>
+
+        <div class="custom-section">
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <label class="input-label" for="customName">What is this for?</label>
+                    <input type="text" id="customName" class="input-field input-field-text" placeholder="e.g. My local council project">
+                </div>
+                <div class="input-wrapper">
+                    <label class="input-label" for="customAmount">Government spend (£)</label>
+                    <input type="text" id="customAmount" class="input-field" placeholder="e.g. 500,000,000" oninput="formatInput(this)">
+                </div>
+                <button class="calculate-btn" onclick="calculateCustom()">Calculate</button>
+            </div>
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <div class="results-inner">
+                <div class="result-project" id="resultProject">—</div>
+                <div class="result-number-row">
+                    <span class="result-number" id="resultNumber">0</span>
+                    <span class="result-households">households</span>
+                </div>
+                <div class="result-unit">are working their <strong><u>ENTIRE</u></strong> lives to pay for this.</div>
+                <div class="result-yours">You could be one of them ...</div>
+                <div class="result-box">
+                    <p class="result-explanation" id="resultExplanation">
+                    </p>
+                </div>
+                <div class="share-section">
+                    <div class="share-label">Share this</div>
+                    <div class="share-buttons">
+                        <button class="share-btn share-x" onclick="shareToX()" title="Share on X">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </button>
+                        <button class="share-btn share-facebook" onclick="shareToFacebook()" title="Share on Facebook">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </button>
+                        <button class="share-btn share-linkedin" onclick="shareToLinkedIn()" title="Share on LinkedIn">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </button>
+                        <button class="share-btn share-whatsapp" onclick="shareToWhatsApp()" title="Share on WhatsApp">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                            </svg>
+                        </button>
+                        <button class="share-btn share-copy" onclick="copyLink()" title="Copy link">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="copy-feedback" id="copyFeedback">Link copied!</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <section class="stat-section">
+        <div class="stat-card">
+            <div class="stat-card-number">£1,277,580</div>
+            <div class="stat-card-text">The average UK household's total tax contribution over their lifetime.</div>
+            <a href="https://taxpayersalliance.com/average-household-will-pay-almost-600-000-in-income-tax-over-its-lifetime/" target="_blank" class="stat-card-link">Source</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>Built by <a href="https://lookingforgrowth.uk/" target="_blank">LFG</a> — Looking for Growth</p>
+    </footer>
+
+    <script>
+        const HOUSEHOLD_CONTRIBUTION = 1277580;
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const hamburger = document.querySelector('.hamburger');
+            menu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+            document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+        }
+
+        function formatNumber(num) {
+            return Math.round(num).toLocaleString('en-GB');
+        }
+
+        function formatInput(input) {
+            let value = input.value.replace(/[^0-9.]/g, '');
+            if (value) {
+                const parts = value.split('.');
+                parts[0] = parseInt(parts[0]).toLocaleString('en-GB');
+                input.value = parts.join('.');
+            }
+        }
+
+        function parseAmount(str) {
+            return parseFloat(str.replace(/,/g, '')) || 0;
+        }
+
+        function selectPreset(btn, amount, projectName) {
+            document.querySelectorAll('.project-card').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('customAmount').value = '';
+            document.getElementById('customName').value = '';
+            showResult(amount, projectName);
+        }
+
+        function calculateCustom() {
+            const amountInput = document.getElementById('customAmount');
+            const nameInput = document.getElementById('customName');
+            const amount = parseAmount(amountInput.value);
+            if (amount > 0) {
+                document.querySelectorAll('.project-card').forEach(b => b.classList.remove('active'));
+                const projectName = nameInput.value.trim() || 'Custom Amount (£' + formatNumber(amount) + ')';
+                showResult(amount, projectName);
+            }
+        }
+
+        function showResult(amount, projectName) {
+            const households = amount / HOUSEHOLD_CONTRIBUTION;
+            const resultsSection = document.getElementById('resultsSection');
+            const resultProject = document.getElementById('resultProject');
+            const resultNumber = document.getElementById('resultNumber');
+            const resultExplanation = document.getElementById('resultExplanation');
+            const resultUnit = document.querySelector('.result-unit');
+            const resultYours = document.querySelector('.result-yours');
+            const resultBox = document.querySelector('.result-box');
+
+            resultProject.textContent = projectName;
+            
+            // Handle 0 households case
+            if (Math.round(households) === 0) {
+                resultNumber.textContent = '0';
+                resultUnit.style.display = 'none';
+                resultYours.style.display = 'none';
+                resultBox.style.display = 'none';
+            } else {
+                animateNumber(resultNumber, households);
+                resultUnit.style.display = 'block';
+                resultYours.style.display = 'block';
+                resultBox.style.display = 'block';
+                
+                // Update share text
+                updateShareText(projectName, households);
+                
+                // Custom messages for specific projects
+                const formattedNumber = formatNumber(households);
+                let explanation = '';
+                
+                if (projectName === 'HS2') {
+                    explanation = `The worst thing ... it isn't even finished. The number is likely to rise even further.`;
+                } else if (projectName === 'Lower Thames Crossing') {
+                    explanation = `<strong>${formattedNumber} households</strong> have paid for their entire lives, and not a single metre has been built from this.`;
+                } else if (projectName === 'Fish Disco') {
+                    explanation = `<strong>${formattedNumber} households</strong> have paid their entire lives, and it would only save one salmon ... every <strong><u>TWELVE</u></strong> years. <a href="https://inews.co.uk/news/politics/700m-fish-disco-saving-one-salmon-every-12-years-4060892" target="_blank">Source</a>`;
+                } else {
+                    explanation = `That's <strong>${formattedNumber} households</strong> paying tax their entire working lives to fund this single project.`;
+                }
+                
+                resultExplanation.innerHTML = explanation;
+            }
+            
+            resultsSection.classList.add('active');
+            
+            setTimeout(() => {
+                resultsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+        }
+
+        function animateNumber(element, target) {
+            const duration = 1200;
+            const start = 0;
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                const easeOut = 1 - Math.pow(1 - progress, 4);
+                const current = start + (target - start) * easeOut;
+                
+                element.textContent = formatNumber(current);
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        function toggleReadMore(element) {
+            const content = element.nextElementSibling;
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                element.textContent = 'Read more...';
+                element.style.display = 'inline';
+            } else {
+                content.classList.add('show');
+                element.style.display = 'none';
+            }
+        }
+
+        function closeReadMore(element) {
+            const content = element.parentElement;
+            const toggle = content.previousElementSibling;
+            content.classList.remove('show');
+            toggle.textContent = 'Read more...';
+            toggle.style.display = 'inline';
+        }
+
+        function openSourcesPopup(projectName, sources) {
+            const title = document.getElementById('sourcesPopupTitle');
+            const list = document.getElementById('sourcesList');
+            
+            title.textContent = projectName + ' - Sources';
+            
+            // Clear existing sources
+            list.innerHTML = '';
+            
+            // Add new sources
+            sources.forEach(source => {
+                const link = document.createElement('a');
+                link.href = source.url;
+                link.target = '_blank';
+                link.className = 'source-item';
+                link.innerHTML = `
+                    <span class="source-name">${source.name}</span>
+                    <span class="source-arrow">→</span>
+                `;
+                list.appendChild(link);
+            });
+            
+            document.getElementById('sourcesPopupOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSourcesPopup() {
+            document.getElementById('sourcesPopupOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('customAmount').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateCustom();
+            }
+        });
+
+        document.getElementById('customName').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateCustom();
+            }
+        });
+
+        // Close popup on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeSourcesPopup();
+            }
+        });
+
+        // Share functionality
+        let currentShareText = '';
+        let currentProjectName = '';
+        let currentHouseholds = 0;
+
+        function updateShareText(projectName, households) {
+            currentProjectName = projectName;
+            currentHouseholds = households;
+            const formattedNumber = formatNumber(households);
+            currentShareText = `${formattedNumber} households are working their ENTIRE lives to pay for ${projectName}. You could be one of them ... See how your taxes are being spent: `;
+        }
+
+        function shareToX() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(currentShareText);
+            window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank', 'width=550,height=420');
+        }
+
+        function shareToFacebook() {
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'width=550,height=420');
+        }
+
+        function shareToLinkedIn() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(currentShareText);
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank', 'width=550,height=420');
+        }
+
+        function shareToWhatsApp() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(currentShareText + window.location.href);
+            window.open(`https://wa.me/?text=${text}`, '_blank');
+        }
+
+        function copyLink() {
+            const textToCopy = currentShareText + window.location.href;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const feedback = document.getElementById('copyFeedback');
+                feedback.classList.add('show');
+                setTimeout(() => {
+                    feedback.classList.remove('show');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
