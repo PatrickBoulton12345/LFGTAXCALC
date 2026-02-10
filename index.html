@@ -1526,16 +1526,16 @@
             </div>
             <!-- Sidebar -->
             <div class="sidebar-panel" id="sidebarPanel">
-                <div class="sidebar-item" onclick="selectProject(this, 40200000000, 'HS2')">
+                <div class="sidebar-item" onclick="selectProject(this, 40500000000, 'HS2')">
                     <span class="sidebar-name">HS2</span>
-                    <span class="sidebar-cost">£40.2bn</span>
+                    <span class="sidebar-cost">£40.5bn</span>
                 </div>
                 <div class="sidebar-item" onclick="selectProject(this, 3970000000, 'A9 Dualling')">
                     <span class="sidebar-name">A9 Dualling</span>
                     <span class="sidebar-cost">£3.97bn</span>
                 </div>
-                <div class="sidebar-item" onclick="selectProject(this, 1200000000, 'Lower Thames Crossing')">
-                    <span class="sidebar-name">Lower Thames Crossing</span>
+                <div class="sidebar-item" onclick="selectProject(this, 1200000000, 'Planning to build Lower Thames Crossing')">
+                    <span class="sidebar-name">Planning to build Lower Thames Crossing</span>
                     <span class="sidebar-cost">£1.2bn</span>
                 </div>
                 <div class="sidebar-item" onclick="selectProject(this, 700000000, 'Fish Disco')">
@@ -1545,6 +1545,10 @@
                 <div class="sidebar-item" onclick="selectProject(this, 100000000, 'Bat Tunnel')">
                     <span class="sidebar-name">Bat Tunnel</span>
                     <span class="sidebar-cost">£100m</span>
+                </div>
+                <div class="sidebar-item" onclick="selectProject(this, 173300000, 'Natural England')">
+                    <span class="sidebar-name">Natural England</span>
+                    <span class="sidebar-cost">£173.3m</span>
                 </div>
             </div>
         </div>
@@ -1583,18 +1587,18 @@
                 <div class="result-project" id="resultProject">—</div>
                 <div class="result-number-row">
                     <span class="result-number" id="resultNumber">0</span>
-                    <span class="result-households">households</span>
+                    <span class="result-households">families</span>
                 </div>
-                <div class="result-unit">are working their <strong>ENTIRE</strong> lives to pay for this.</div>
-                <div class="result-yours">You could be one of them ...</div>
+                <div class="result-unit">are working their entire lives to pay for a broken system.</div>
+                <div class="result-yours">Britain's planning system is broken.</div>
                 <div class="result-box">
                     <p class="result-explanation" id="resultExplanation">
                     </p>
                 </div>
 
                 <div class="newsletter-cta">
-                    <h3 class="newsletter-cta-title">Do you think this is okay?</h3>
-                    <p class="newsletter-cta-subtitle">If not, join our mailing list to join our movement to reverse Britain's decline.</p>
+                    <h3 class="newsletter-cta-title" id="nlCtaTitle">Do you think this is okay?</h3>
+                    <p class="newsletter-cta-subtitle" id="nlCtaSubtitle">If not, join our mailing list to join our movement to reverse Britain's decline.</p>
                     <form class="newsletter-inline-form" id="newsletterForm">
                         <div class="newsletter-fields">
                             <div class="newsletter-field">
@@ -1869,23 +1873,34 @@
                 const formattedNumber = formatNumber(households);
                 let explanation = '';
 
+                // Newsletter CTA text
+                let ctaTitle = 'Do you think this is okay?';
+                let ctaSubtitle = 'If not, join our mailing list to join our movement to reverse Britain\'s decline.';
+
                 if (projectName === 'HS2') {
-                    explanation = `It has cost £40.2bn so far. Spain built Barcelona to Madrid high-speed rail for £17bn. The worst thing ... it isn't even finished. The number is likely to rise even further. <a href="#" onclick="event.preventDefault(); openSourcesPopup('HS2', [{name: 'HS2 6-monthly report to Parliament', url: 'https://www.gov.uk/government/speeches/hs2-6-monthly-report-to-parliament-july-2025'}])">Source</a>`;
+                    explanation = `The U.K. has spent £40.5 billion on HS2. <a href="#" onclick="event.preventDefault(); openSourcesPopup('HS2', [{name: 'HS2 6-monthly report to Parliament', url: 'https://www.gov.uk/government/speeches/hs2-6-monthly-report-to-parliament-july-2025'}])"><sup>1</sup></a><br><br>This is not normal.<br><br>Spain has built a railway between Madrid and Barcelona which cost £17 billion - but that isn't all.<br><br>Spain wants the train on the tracks to go <strong>EVEN</strong> quicker so the journey time is decreased by an hour. <a href="#" onclick="event.preventDefault(); openSourcesPopup('HS2 - Spain comparison', [{name: 'Spain aims to cut Madrid-Barcelona high speed rail time to under two hours', url: 'https://www.reuters.com/world/europe/spain-aims-cut-madrid-barcelona-high-speed-rail-time-under-two-hours-minister-2024-01-15/'}])"><sup>2</sup></a> They have it - why can't we?<br><br>Our planning system is well and truly broken. We prioritise processes over outcomes. Bats over humans and newts over commuters.`;
+                    ctaSubtitle = 'We don\'t have to live like this. Join our mailing list to join our movement to get Britain back on track.';
                 } else if (projectName === 'A9 Dualling') {
-                    explanation = `Scottish road upgrade connecting Perth to Inverness, and it's <strong>TEN</strong> years overdue. Due to finish in 2035. <a href="#" onclick="event.preventDefault(); openSourcesPopup('A9 Dualling', [{name: 'A9 Dualling - BBC News', url: 'https://www.bbc.co.uk/news/uk-scotland-highlands-islands-67771630'}, {name: 'A9 Dualling Programme Overview', url: 'https://www.a9dualling.scot/a9-dualling/programme-overview/'}])">Sources</a>`;
-                } else if (projectName === 'Lower Thames Crossing') {
-                    explanation = `So far, the Lower Thames Crossing has cost £1.2 <strong>BILLION</strong>. Despite this colossal spend, not a <strong>SINGLE</strong> metre has actually been built. Norway built the world's longest road tunnel for just £98 million. This means on just <strong>PLANNING</strong> alone Norway could have built <strong>TWELVE</strong> tunnels. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Lower Thames Crossing', [{name: '£1.2bn Lower Thames Crossing', url: 'https://www.ft.com/content/917d4b7f-318e-46fe-ba44-664551ebcf13'}, {name: 'Norwegian Tunnel £98 million', url: 'https://www.mirror.co.uk/travel/incredible-98m-tunnel-worlds-longest-34256712'}])">Sources</a>`;
+                    explanation = `Scotland's A9 road is dubbed 'Scotland's most dangerous road' where more than 300 crashes have occurred in just four years. <a href="#" onclick="event.preventDefault(); openSourcesPopup('A9 Dualling', [{name: 'SNP accused of betrayal over Scotland\\'s most dangerous road', url: 'https://www.telegraph.co.uk/politics/2024/03/10/snp-accused-of-betrayal-over-scotland-s-most-dangerous-road/'}])"><sup>3</sup></a><br><br>The road is mostly single laned. This will lead to dangerous overtakes which result in collisions, sometimes lethal.<br><br>It is now <strong>TEN</strong> years overdue. This is not acceptable. Just get it done.`;
+                } else if (projectName === 'Planning to build Lower Thames Crossing') {
+                    explanation = `£1.2 <strong>BILLION</strong> has been spent on the Lower Thames Crossing, but not to build it. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Lower Thames Crossing', [{name: 'Lower Thames Crossing has cost £1.2bn even before construction starts', url: 'https://www.ft.com/content/917d4b7f-318e-46fe-ba44-664551ebcf13'}])"><sup>4</sup></a> This money has been spent on just the planning alone. Not a single metre of road has been built.<br><br>That's ${formattedNumber} families working for their entire lifetimes to fund … nothing.`;
                 } else if (projectName === 'Fish Disco') {
-                    explanation = `Will cost £700m after 'vegetable lobby' pressure. Saves one salmon every ... <strong>TWELVE</strong> years. <a href="https://inews.co.uk/news/politics/700m-fish-disco-saving-one-salmon-every-12-years-4060892" target="_blank">Source</a>`;
+                    explanation = `After endless green lobby demands the Hinkley Point C nuclear power plant will have a 'fish disco'. This is a £700 million deterrent system which will save one salmon … every twelve years. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Fish Disco', [{name: '£700m nuclear conservation plan would save one salmon every 12 years', url: 'https://inews.co.uk/news/politics/700m-fish-disco-saving-one-salmon-every-12-years-4060892'}])"><sup>5</sup></a><br><br>That's ${formattedNumber} families working for their entire lives to blast noise to deter fish. This is not factoring in higher energy bills as a result.`;
                 } else if (projectName === 'Bat Tunnel') {
-                    explanation = `A tunnel built to help bats cross a railway line safely, and the bats can crawl through the mesh in the tunnel... <a href="#" onclick="event.preventDefault(); openSourcesPopup('Bat Tunnel', [{name: 'Bat Tunnel - BBC News', url: 'https://www.bbc.co.uk/news/articles/c3dep92x054o'}, {name: 'HS2 Bat Tunnel Not Batproof - Telegraph', url: 'https://www.telegraph.co.uk/news/2024/12/21/hs2s-100m-bat-shield-tunnel-is-not-batproof/'}])">Sources</a>`;
+                    explanation = `HS2 had to build a structure colloquially called a 'Bat Tunnel'. This is a tunnel which will 'protect' bats from high speed trains which will be going through this area.<br><br>The worst thing? The tunnel won't even protect bats. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Bat Tunnel', [{name: 'HS2\\'s £100m bat shield tunnel is not actually bat-proof', url: 'https://www.telegraph.co.uk/news/2024/12/21/hs2s-100m-bat-shield-tunnel-is-not-batproof/'}])"><sup>6</sup></a><br><br>That's ${formattedNumber} families working for their whole lives to fund a tunnel which won't even protect the thing it's meant to.`;
+                } else if (projectName === 'Natural England') {
+                    explanation = `Natural England is given ${formattedNumber} families' lifetime earnings to <strong>block</strong> kite festivals. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Natural England', [{name: 'Natural England action plan 2024 to 2025', url: 'https://www.gov.uk/government/publications/natural-england-action-plan-2024-to-2025'}, {name: 'LFG on kite festivals', url: 'https://x.com/lfg_uk/status/1970059386534977751'}])">Sources</a>`;
                 } else {
                     explanation = '';
                 }
-                
+
                 resultExplanation.innerHTML = explanation;
+
+                // Update newsletter CTA text
+                document.getElementById('nlCtaTitle').textContent = ctaTitle;
+                document.getElementById('nlCtaSubtitle').textContent = ctaSubtitle;
             }
-            
+
             resultsSection.classList.add('active');
             document.getElementById('shareFollowCard').style.display = 'block';
             document.getElementById('whyCard').style.display = 'block';
@@ -2046,7 +2061,7 @@
                 onEachFeature: function(feature, layer) {
                     layer.on('click', function() {
                         const sidebarItem = document.querySelector('.sidebar-item[onclick*="HS2"]');
-                        if (sidebarItem) selectProject(sidebarItem, 40200000000, 'HS2');
+                        if (sidebarItem) selectProject(sidebarItem, 40500000000, 'HS2');
                     });
                 }
             }).addTo(window.projectMap);
@@ -2063,7 +2078,7 @@
             }).addTo(window.projectMap);
             londonMarker.on('click', function() {
                 const sidebarItem = document.querySelector('.sidebar-item[onclick*="HS2"]');
-                if (sidebarItem) selectProject(sidebarItem, 40200000000, 'HS2');
+                if (sidebarItem) selectProject(sidebarItem, 40500000000, 'HS2');
             });
             hs2Layers.push(londonMarker);
 
@@ -2083,7 +2098,7 @@
             });
             birminghamMarker.on('click', function() {
                 const sidebarItem = document.querySelector('.sidebar-item[onclick*="HS2"]');
-                if (sidebarItem) selectProject(sidebarItem, 40200000000, 'HS2');
+                if (sidebarItem) selectProject(sidebarItem, 40500000000, 'HS2');
             });
             hs2Layers.push(birminghamMarker);
 
@@ -2158,10 +2173,10 @@
             });
             ltcMarker.on('click', function() {
                 const sidebarItem = document.querySelector('.sidebar-item[onclick*="Lower Thames"]');
-                if (sidebarItem) selectProject(sidebarItem, 1200000000, 'Lower Thames Crossing');
+                if (sidebarItem) selectProject(sidebarItem, 1200000000, 'Planning to build Lower Thames Crossing');
             });
             ltcLayers.push(ltcMarker);
-            window.projectMapLayers['Lower Thames Crossing'] = ltcLayers;
+            window.projectMapLayers['Planning to build Lower Thames Crossing'] = ltcLayers;
 
             // Fish Disco marker (Hinkley Point C)
             const fishLayers = [];
@@ -2216,6 +2231,24 @@
             batLayers.push(batLabel);
 
             window.projectMapLayers['Bat Tunnel'] = batLayers;
+
+            // Natural England marker
+            const neLayers = [];
+            const nePos = [53.9603, -1.0746];
+            const neMarker = L.circleMarker(nePos, {
+                radius: 6, fillColor: '#FE5500', fillOpacity: 0.4, color: '#000000', weight: 2
+            }).addTo(window.projectMap).bindTooltip('Natural England', {
+                permanent: true,
+                direction: 'right',
+                offset: [10, 0],
+                className: 'project-label'
+            });
+            neMarker.on('click', function() {
+                const sidebarItem = document.querySelector('.sidebar-item[onclick*="Natural England"]');
+                if (sidebarItem) selectProject(sidebarItem, 173300000, 'Natural England');
+            });
+            neLayers.push(neMarker);
+            window.projectMapLayers['Natural England'] = neLayers;
 
             // Fit to mainland UK bounds
             var ukBounds = [[49.9, -6.5], [58.7, 1.8]];
