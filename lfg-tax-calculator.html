@@ -1193,6 +1193,255 @@
                 display: none;
             }
         }
+
+        /* Newsletter CTA in results */
+        .newsletter-cta {
+            margin-top: 40px;
+            padding-top: 32px;
+            border-top: 2px solid rgba(0,0,0,0.1);
+        }
+
+        .newsletter-cta-title {
+            font-family: 'Octarine', 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--black);
+            margin-bottom: 8px;
+        }
+
+        .newsletter-cta-subtitle {
+            font-size: 16px;
+            color: var(--black);
+            margin-bottom: 24px;
+        }
+
+        .newsletter-inline-form {
+            max-width: 400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .newsletter-fields {
+            display: flex;
+            gap: 12px;
+        }
+
+        .newsletter-field {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            text-align: left;
+        }
+
+        .newsletter-field label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--black);
+        }
+
+        .newsletter-field input {
+            height: 40px;
+            width: 100%;
+            border-radius: 8px;
+            border: 2px solid var(--black);
+            background: white;
+            padding: 4px 12px;
+            font-size: 16px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .newsletter-field input:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(254, 85, 0, 0.15);
+        }
+
+        .newsletter-field input.nl-input-error {
+            border-color: #dc2626;
+        }
+
+        .nl-error {
+            color: #dc2626;
+            font-size: 13px;
+            display: none;
+        }
+
+        .nl-error.show {
+            display: block;
+        }
+
+        .nl-submit-error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            font-size: 14px;
+            padding: 12px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .nl-submit-error.show {
+            display: block;
+        }
+
+        .nl-submit-btn {
+            background: var(--black);
+            border-top: 2px solid var(--orange);
+            border-bottom: 6px solid var(--orange);
+            border-left: 2px solid var(--orange);
+            border-right: 6px solid var(--orange);
+            cursor: pointer;
+            color: white;
+            border-radius: 8px;
+            padding: 10px 24px;
+            font-weight: bold;
+            width: 100%;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .nl-submit-btn:hover:not(:disabled) {
+            background: var(--orange);
+            border-top: 2px solid var(--black);
+            border-bottom: 6px solid var(--black);
+            border-left: 2px solid var(--black);
+            border-right: 6px solid var(--black);
+            color: var(--black);
+        }
+
+        .nl-submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 480px) {
+            .newsletter-fields {
+                flex-direction: column;
+            }
+        }
+
+        /* Newsletter Success Modal */
+        .nl-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .nl-modal-overlay.show {
+            display: flex;
+        }
+
+        .nl-modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            border: 2px solid var(--black);
+        }
+
+        .nl-modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .nl-modal-close:hover {
+            background: #f3f4f6;
+        }
+
+        .nl-modal-title {
+            font-family: 'Octarine', 'DM Sans', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 16px;
+            margin-top: 8px;
+        }
+
+        .nl-modal-text {
+            text-align: center;
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+
+        .nl-modal-divider {
+            border: none;
+            border-top: 1px solid var(--black);
+            margin: 16px 0;
+        }
+
+        .nl-modal-social-title {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .nl-social-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .nl-social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s;
+        }
+
+        .nl-social-link:hover {
+            opacity: 0.7;
+        }
+
+        .nl-donate-btn {
+            background: var(--orange);
+            color: var(--black);
+            font-weight: bold;
+            padding: 8px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            border: 2px solid var(--black);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            font-size: 17px;
+            font-family: inherit;
+            transition: background 0.2s;
+        }
+
+        .nl-donate-btn:hover {
+            background: var(--yellow);
+        }
+
+        .nl-donate-container {
+            display: flex;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -1334,6 +1583,27 @@
                 <div class="result-box">
                     <p class="result-explanation" id="resultExplanation">
                     </p>
+                </div>
+
+                <div class="newsletter-cta">
+                    <h3 class="newsletter-cta-title">Do you think this is okay?</h3>
+                    <p class="newsletter-cta-subtitle">If not, join our mailing list to join our movement to reverse Britain's decline.</p>
+                    <form class="newsletter-inline-form" id="newsletterForm">
+                        <div class="newsletter-fields">
+                            <div class="newsletter-field">
+                                <label for="nlName">name*</label>
+                                <input type="text" id="nlName" name="name" required>
+                                <span class="nl-error" id="nlNameError">Name is required</span>
+                            </div>
+                            <div class="newsletter-field">
+                                <label for="nlEmail">email*</label>
+                                <input type="email" id="nlEmail" name="email" required>
+                                <span class="nl-error" id="nlEmailError">Invalid email address</span>
+                            </div>
+                        </div>
+                        <div class="nl-submit-error" id="nlSubmitError">Failed to submit. Please try again.</div>
+                        <button type="submit" class="nl-submit-btn" id="nlSubmitBtn">join us</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -1966,5 +2236,156 @@
         });
 
     </script>
+
+<!-- Newsletter Success Modal -->
+<div class="nl-modal-overlay" id="nlSuccessModal">
+    <div class="nl-modal-content">
+        <button class="nl-modal-close" id="nlModalClose">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <h2 class="nl-modal-title">Thank You!</h2>
+        <p class="nl-modal-text">Thanks for signing up. We look forward to connecting with you and will be in touch soon!</p>
+        <hr class="nl-modal-divider">
+        <p class="nl-modal-social-title">Follow us on social media to stay updated:</p>
+        <div class="nl-social-links">
+            <a href="https://www.instagram.com/lookingforgrowthuk/" target="_blank" rel="noopener noreferrer" class="nl-social-link">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+                    <rect width="24" height="24" rx="6" fill="url(#nl-ig-grad)"/>
+                    <path d="M12 8.75a3.25 3.25 0 1 0 0 6.5 3.25 3.25 0 0 0 0-6.5Z" fill="#fff"/>
+                    <path d="M16.25 4h-8.5A3.75 3.75 0 0 0 4 7.75v8.5A3.75 3.75 0 0 0 7.75 20h8.5A3.75 3.75 0 0 0 20 16.25v-8.5A3.75 3.75 0 0 0 16.25 4Zm2.5 12.25a2.5 2.5 0 0 1-2.5 2.5h-8.5a2.5 2.5 0 0 1-2.5-2.5v-8.5a2.5 2.5 0 0 1 2.5-2.5h8.5a2.5 2.5 0 0 1 2.5 2.5v8.5Z" fill="#fff"/>
+                    <circle cx="16.875" cy="7.125" r="0.875" fill="#fff"/>
+                    <defs><linearGradient id="nl-ig-grad" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop stop-color="#f58529"/><stop offset="0.5" stop-color="#dd2a7b"/><stop offset="1" stop-color="#8134af"/></linearGradient></defs>
+                </svg>
+            </a>
+            <a href="https://x.com/lfg_uk" target="_blank" rel="noopener noreferrer" class="nl-social-link">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+                    <rect width="24" height="24" rx="6" fill="#000"/>
+                    <path d="M13.3174 10.7749L18.1677 5H17.0112L12.8193 10.0088L9.48911 5H5.5L10.5911 12.2311L5.5 18.3421H6.65645L11.0886 13.0662L14.6098 18.3421H18.5989L13.3171 10.7749H13.3174ZM11.6686 12.3839L11.1464 11.6366L7.0715 5.87016H8.92964L12.2012 10.5747L12.7234 11.322L17.0117 17.5091H15.1536L11.6686 12.3843V12.3839Z" fill="#fff"/>
+                </svg>
+            </a>
+            <a href="https://www.youtube.com/@LFGrowth" target="_blank" rel="noopener noreferrer" class="nl-social-link">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+                    <rect width="24" height="24" rx="6" fill="#FF0000"/>
+                    <path d="M19.615 8.375a2.12 2.12 0 0 0-1.49-1.5C16.78 6.5 12 6.5 12 6.5s-4.78 0-6.125.375a2.12 2.12 0 0 0-1.49 1.5C4 9.72 4 12.5 4 12.5s0 2.78.385 4.125a2.12 2.12 0 0 0 1.49 1.5C7.22 18.5 12 18.5 12 18.5s4.78 0 6.125-.375a2.12 2.12 0 0 0 1.49-1.5C20 15.28 20 12.5 20 12.5s0-2.78-.385-4.125Z" fill="#fff"/>
+                    <path d="M10.5 15V10l4 2.5-4 2.5Z" fill="#FF0000"/>
+                </svg>
+            </a>
+        </div>
+        <hr class="nl-modal-divider">
+        <p class="nl-modal-text">If you want to help us really push this issue, please consider donating!</p>
+        <div class="nl-donate-container">
+            <a href="https://lookingforgrowth.uk/donate" class="nl-donate-btn">Donate</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        const NL_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/24440311/ursog2a/';
+        const NL_LIST_ID = '56';
+
+        const nlForm = document.getElementById('newsletterForm');
+        const nlName = document.getElementById('nlName');
+        const nlEmail = document.getElementById('nlEmail');
+        const nlNameError = document.getElementById('nlNameError');
+        const nlEmailError = document.getElementById('nlEmailError');
+        const nlSubmitError = document.getElementById('nlSubmitError');
+        const nlSubmitBtn = document.getElementById('nlSubmitBtn');
+        const nlModal = document.getElementById('nlSuccessModal');
+        const nlModalClose = document.getElementById('nlModalClose');
+
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function clearErrors() {
+            nlName.classList.remove('nl-input-error');
+            nlEmail.classList.remove('nl-input-error');
+            nlNameError.classList.remove('show');
+            nlEmailError.classList.remove('show');
+            nlSubmitError.classList.remove('show');
+        }
+
+        nlForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            clearErrors();
+
+            const name = nlName.value.trim();
+            const email = nlEmail.value.trim();
+            let hasError = false;
+
+            if (!name) {
+                nlName.classList.add('nl-input-error');
+                nlNameError.textContent = 'Name is required';
+                nlNameError.classList.add('show');
+                hasError = true;
+            }
+
+            if (!email) {
+                nlEmail.classList.add('nl-input-error');
+                nlEmailError.textContent = 'Email is required';
+                nlEmailError.classList.add('show');
+                hasError = true;
+            } else if (!validateEmail(email)) {
+                nlEmail.classList.add('nl-input-error');
+                nlEmailError.textContent = 'Invalid email address';
+                nlEmailError.classList.add('show');
+                hasError = true;
+            }
+
+            if (hasError) return;
+
+            nlSubmitBtn.disabled = true;
+            nlSubmitBtn.textContent = 'submitting...';
+
+            try {
+                const payload = new URLSearchParams({
+                    'Name': name,
+                    'Email': email,
+                    'List ID(s)': NL_LIST_ID
+                });
+
+                const response = await fetch(NL_WEBHOOK, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: payload.toString()
+                });
+
+                if (!response.ok) throw new Error('Failed');
+
+                nlName.value = '';
+                nlEmail.value = '';
+                nlModal.classList.add('show');
+            } catch (err) {
+                console.error('Newsletter signup error:', err);
+                nlSubmitError.classList.add('show');
+            } finally {
+                nlSubmitBtn.disabled = false;
+                nlSubmitBtn.textContent = 'join us';
+            }
+        });
+
+        nlModalClose.addEventListener('click', function() {
+            nlModal.classList.remove('show');
+        });
+
+        nlModal.addEventListener('click', function(e) {
+            if (e.target === nlModal) nlModal.classList.remove('show');
+        });
+
+        nlName.addEventListener('input', function() {
+            nlName.classList.remove('nl-input-error');
+            nlNameError.classList.remove('show');
+        });
+
+        nlEmail.addEventListener('input', function() {
+            nlEmail.classList.remove('nl-input-error');
+            nlEmailError.classList.remove('show');
+        });
+    })();
+</script>
 </body>
 </html>
