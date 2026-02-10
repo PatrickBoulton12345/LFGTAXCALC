@@ -1003,18 +1003,38 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.2s ease;
             background: white;
+            position: relative;
+            overflow: hidden;
+            transition: color 0.3s ease;
         }
 
-        .sidebar-item:hover {
+        .sidebar-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: var(--orange);
-            color: white;
+            transform: translateX(-101%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
         }
 
+        .sidebar-item:hover::before,
+        .sidebar-item.active::before {
+            transform: translateX(0);
+        }
+
+        .sidebar-item:hover,
         .sidebar-item.active {
-            background: var(--orange);
             color: white;
+        }
+
+        .sidebar-item > * {
+            position: relative;
+            z-index: 1;
         }
 
         .sidebar-name {
@@ -1215,7 +1235,7 @@
             </div>
             <!-- Sidebar -->
             <div class="sidebar-panel" id="sidebarPanel">
-                <div class="sidebar-item active" onclick="selectProject(this, 40200000000, 'HS2')">
+                <div class="sidebar-item" onclick="selectProject(this, 40200000000, 'HS2')">
                     <span class="sidebar-name">HS2</span>
                     <span class="sidebar-cost">£40.2bn</span>
                 </div>
