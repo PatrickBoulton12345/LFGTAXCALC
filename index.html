@@ -1894,7 +1894,9 @@
             document.getElementById('whyCard').style.display = 'block';
 
             setTimeout(() => {
-                resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const headerHeight = document.querySelector('header').offsetHeight;
+                const top = resultsSection.getBoundingClientRect().top + window.pageYOffset - headerHeight - 16;
+                window.scrollTo({ top: top, behavior: 'smooth' });
             }, 100);
         }
 
