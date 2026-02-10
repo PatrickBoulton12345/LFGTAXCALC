@@ -1094,6 +1094,24 @@
             border-right-color: var(--black);
         }
 
+        .project-label-icon {
+            background: none !important;
+            border: none !important;
+        }
+
+        .project-label-box {
+            background: var(--black);
+            color: white;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            border-radius: 6px;
+            padding: 4px 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
         .leaflet-control-attribution {
             display: none !important;
         }
@@ -1872,19 +1890,37 @@
             // Bat Tunnel marker
             const batLayers = [];
             const batPos = [51.9018, -0.9834];
+            const batLabelPos = [53.2, 0.6];
             const batMarker = L.circleMarker(batPos, {
                 radius: 6, fillColor: '#FE5500', fillOpacity: 0.4, color: '#000000', weight: 2
-            }).addTo(window.projectMap).bindTooltip('Bat Tunnel', {
-                permanent: true,
-                direction: 'right',
-                offset: [10, -15],
-                className: 'project-label'
-            });
+            }).addTo(window.projectMap);
             batMarker.on('click', function() {
                 const sidebarItem = document.querySelector('.sidebar-item[onclick*="Bat Tunnel"]');
                 if (sidebarItem) selectProject(sidebarItem, 100000000, 'Bat Tunnel');
             });
             batLayers.push(batMarker);
+
+            // Leader line from dot to label
+            const batLeader = L.polyline([batPos, batLabelPos], {
+                color: '#000000', weight: 1.5, opacity: 0.6, dashArray: '4 4'
+            }).addTo(window.projectMap);
+            batLayers.push(batLeader);
+
+            // Label at end of leader line
+            const batLabel = L.marker(batLabelPos, {
+                icon: L.divIcon({
+                    className: 'project-label-icon',
+                    html: '<div class="project-label-box">Bat Tunnel</div>',
+                    iconSize: null,
+                    iconAnchor: [0, 12]
+                })
+            }).addTo(window.projectMap);
+            batLabel.on('click', function() {
+                const sidebarItem = document.querySelector('.sidebar-item[onclick*="Bat Tunnel"]');
+                if (sidebarItem) selectProject(sidebarItem, 100000000, 'Bat Tunnel');
+            });
+            batLayers.push(batLabel);
+
             window.projectMapLayers['Bat Tunnel'] = batLayers;
 
             // Fit to mainland UK bounds
