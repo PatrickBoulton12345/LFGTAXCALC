@@ -1533,8 +1533,8 @@
                     <span class="sidebar-name">A9 Dualling</span>
                     <span class="sidebar-cost">£3.97bn</span>
                 </div>
-                <div class="sidebar-item" onclick="selectProject(this, 1200000000, 'Planning to build Lower Thames Crossing')">
-                    <span class="sidebar-name">Planning to build Lower Thames Crossing</span>
+                <div class="sidebar-item" onclick="selectProject(this, 1200000000, 'Lower Thames Crossing - Planning cost.')">
+                    <span class="sidebar-name">Lower Thames Crossing - Planning cost.</span>
                     <span class="sidebar-cost">£1.2bn</span>
                 </div>
                 <div class="sidebar-item" onclick="selectProject(this, 700000000, 'Fish Disco')">
@@ -1874,8 +1874,8 @@
                 explanation = openingLine + `are working for their <strong>ENTIRE</strong> lives just to fund this.<br><br>Spain managed to build a railway from Madrid to Barcelona for £17 billion. It should not cost us more than £40 billion <a href="#" onclick="event.preventDefault(); openSourcesPopup('HS2', [{name: 'HS2 6-monthly report to Parliament', url: 'https://www.gov.uk/government/speeches/hs2-6-monthly-report-to-parliament-july-2025'}])"><sup>1</sup></a> for a railway which is not even finished. <a href="#" onclick="event.preventDefault(); openSourcesPopup('HS2 - Spain comparison', [{name: 'Spain aims to cut Madrid-Barcelona high speed rail time to under two hours', url: 'https://www.reuters.com/world/europe/spain-aims-cut-madrid-barcelona-high-speed-rail-time-under-two-hours-minister-2024-01-15/'}])"><sup>2</sup></a><br><br>We must do better.`;
             } else if (projectName === 'A9 Dualling') {
                 explanation = openingLine + `are working for their entire lives to fund a broken planning system.<br><br>The road is mostly single laned. This will lead to dangerous overtakes which result in collisions, sometimes lethal.<br><br>It is now <strong>TEN</strong> years overdue. This is simply unacceptable. Just get it done.`;
-            } else if (projectName === 'Planning to build Lower Thames Crossing') {
-                explanation = openingLine + `are working for their entire lives to fund a broken planning system.<br><br>Despite costing £1.2 billion so far … not a <strong>SINGLE</strong> metre has been built.`;
+            } else if (projectName === 'Lower Thames Crossing - Planning cost.') {
+                explanation = openingLine + `are working for their entire lives to fund a broken planning system.<br><br>Despite costing £1.2 billion so far … not a <strong>SINGLE</strong> metre has been built. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Lower Thames Crossing - Planning cost.', [{name: 'Lower Thames Crossing — Financial Times', url: 'https://www.ft.com/content/917d4b7f-318e-46fe-ba44-664551ebcf13'}])"><sup>1</sup></a>`;
             } else if (projectName === 'Fish Disco') {
                 explanation = openingLine + `are working for their <strong>ENTIRE</strong> lives to fund … saving a salmon every twelve years. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Fish Disco', [{name: '£700m nuclear conservation plan would save one salmon every 12 years', url: 'https://inews.co.uk/news/politics/700m-fish-disco-saving-one-salmon-every-12-years-4060892'}])"><sup>1</sup></a>`;
             } else if (projectName === 'Bat Tunnel') {
@@ -2160,7 +2160,7 @@
             const ltcPos = [51.4559, 0.4390];
             const ltcMarker = L.circleMarker(ltcPos, {
                 radius: 6, fillColor: '#FE5500', fillOpacity: 0.4, color: '#000000', weight: 2
-            }).addTo(window.projectMap).bindTooltip('Lower Thames Crossing', {
+            }).addTo(window.projectMap).bindTooltip('Lower Thames Crossing - Planning cost.', {
                 permanent: true,
                 direction: 'right',
                 offset: [10, 0],
@@ -2168,10 +2168,10 @@
             });
             ltcMarker.on('click', function() {
                 const sidebarItem = document.querySelector('.sidebar-item[onclick*="Lower Thames"]');
-                if (sidebarItem) selectProject(sidebarItem, 1200000000, 'Planning to build Lower Thames Crossing');
+                if (sidebarItem) selectProject(sidebarItem, 1200000000, 'Lower Thames Crossing - Planning cost.');
             });
             ltcLayers.push(ltcMarker);
-            window.projectMapLayers['Planning to build Lower Thames Crossing'] = ltcLayers;
+            window.projectMapLayers['Lower Thames Crossing - Planning cost.'] = ltcLayers;
 
             // Fish Disco marker (Hinkley Point C)
             const fishLayers = [];
