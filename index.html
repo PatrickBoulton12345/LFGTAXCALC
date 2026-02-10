@@ -1830,6 +1830,42 @@
             ltcLayers.push(ltcMarker);
             window.projectMapLayers['Lower Thames Crossing'] = ltcLayers;
 
+            // Fish Disco marker (Hinkley Point C)
+            const fishLayers = [];
+            const fishPos = [51.2075, -3.1280];
+            const fishMarker = L.circleMarker(fishPos, {
+                radius: 6, fillColor: '#FE5500', fillOpacity: 0.4, color: '#000000', weight: 2
+            }).addTo(window.projectMap).bindTooltip('Fish Disco', {
+                permanent: true,
+                direction: 'left',
+                offset: [-10, 0],
+                className: 'project-label'
+            });
+            fishMarker.on('click', function() {
+                const sidebarItem = document.querySelector('.sidebar-item[onclick*="Fish Disco"]');
+                if (sidebarItem) selectProject(sidebarItem, 700000000, 'Fish Disco');
+            });
+            fishLayers.push(fishMarker);
+            window.projectMapLayers['Fish Disco'] = fishLayers;
+
+            // Bat Tunnel marker
+            const batLayers = [];
+            const batPos = [51.9018, -0.9834];
+            const batMarker = L.circleMarker(batPos, {
+                radius: 6, fillColor: '#FE5500', fillOpacity: 0.4, color: '#000000', weight: 2
+            }).addTo(window.projectMap).bindTooltip('Bat Tunnel', {
+                permanent: true,
+                direction: 'right',
+                offset: [10, 0],
+                className: 'project-label'
+            });
+            batMarker.on('click', function() {
+                const sidebarItem = document.querySelector('.sidebar-item[onclick*="Bat Tunnel"]');
+                if (sidebarItem) selectProject(sidebarItem, 100000000, 'Bat Tunnel');
+            });
+            batLayers.push(batMarker);
+            window.projectMapLayers['Bat Tunnel'] = batLayers;
+
             // Fit to mainland UK bounds
             var ukBounds = [[49.9, -6.5], [58.7, 1.8]];
             window.projectMap.fitBounds(ukBounds);
