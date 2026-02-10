@@ -557,23 +557,7 @@
             margin-bottom: 24px;
             color: var(--black);
             padding-bottom: 24px;
-            position: relative;
-        }
-
-        .result-project::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 3px;
-            background: var(--orange);
-            transform: translateX(-50%);
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
-        }
-
-        .results-section.active .result-project::after {
-            width: 100%;
+            border-bottom: 2px solid rgba(0,0,0,0.1);
         }
 
         .result-number-row {
@@ -1624,9 +1608,6 @@
                 resultExplanation.innerHTML = explanation;
             }
             
-            // Re-trigger underline animation by briefly removing active class
-            resultsSection.classList.remove('active');
-            void resultsSection.offsetWidth; // force reflow
             resultsSection.classList.add('active');
             document.getElementById('shareFollowCard').style.display = 'block';
             document.getElementById('whyCard').style.display = 'block';
