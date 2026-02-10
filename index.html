@@ -1066,6 +1066,8 @@
             padding: 4px 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
             white-space: nowrap;
+            pointer-events: auto;
+            cursor: pointer;
         }
 
         .project-label::before {
@@ -1874,6 +1876,15 @@
             setTimeout(function() {
                 window.projectMap.invalidateSize();
                 window.projectMap.fitBounds(ukBounds);
+
+                // Make tooltip labels clickable
+                document.querySelectorAll('.project-label').forEach(function(label) {
+                    label.addEventListener('click', function() {
+                        var text = label.textContent.trim();
+                        var item = document.querySelector('.sidebar-item[onclick*="' + text.replace("'", "\\'") + '"]');
+                        if (item) item.click();
+                    });
+                });
             }, 100);
         }
 
