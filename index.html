@@ -1589,7 +1589,6 @@
                     <span class="result-number" id="resultNumber">0</span>
                     <span class="result-households">families</span>
                 </div>
-                <div class="result-unit">are working their entire lives to pay for a broken system.</div>
                 <div class="result-yours">Britain's planning system is broken.</div>
                 <div class="result-box">
                     <p class="result-explanation" id="resultExplanation">
@@ -1848,21 +1847,18 @@
             const resultProject = document.getElementById('resultProject');
             const resultNumber = document.getElementById('resultNumber');
             const resultExplanation = document.getElementById('resultExplanation');
-            const resultUnit = document.querySelector('.result-unit');
             const resultYours = document.querySelector('.result-yours');
             const resultBox = document.querySelector('.result-box');
 
             resultProject.textContent = projectName;
-            
-            // Handle 0 households case
+
+            // Handle 0 families case
             if (Math.round(households) === 0) {
                 resultNumber.textContent = '0';
-                resultUnit.style.display = 'none';
                 resultYours.style.display = 'none';
                 resultBox.style.display = 'none';
             } else {
                 animateNumber(resultNumber, households);
-                resultUnit.style.display = 'block';
                 resultYours.style.display = 'block';
                 resultBox.style.display = 'block';
                 
