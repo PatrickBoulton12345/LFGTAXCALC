@@ -1585,7 +1585,7 @@
         <div class="results-section" id="resultsSection">
             <div class="results-inner">
                 <div class="result-project" id="resultProject">—</div>
-                <div class="result-number-row">
+                <div class="result-number-row" id="resultNumberRow">
                     <span class="result-number" id="resultNumber">0</span>
                     <span class="result-households">families</span>
                 </div>
@@ -1851,50 +1851,51 @@
             const resultBox = document.querySelector('.result-box');
 
             resultProject.textContent = projectName;
+            const resultNumberRow = document.getElementById('resultNumberRow');
 
-            // Handle 0 families case
+            const formattedNumber = formatNumber(households);
+
+            // Handle display per project
             if (Math.round(households) === 0) {
                 resultNumber.textContent = '0';
+                resultNumberRow.style.display = 'flex';
                 resultYours.style.display = 'none';
                 resultBox.style.display = 'none';
+            } else if (projectName === 'HS2') {
+                resultNumberRow.style.display = 'none';
+                resultYours.style.display = 'none';
+                resultBox.style.display = 'block';
+                updateShareText(projectName, households);
             } else {
+                resultNumberRow.style.display = 'flex';
                 animateNumber(resultNumber, households);
                 resultYours.style.display = 'block';
                 resultBox.style.display = 'block';
-                
-                // Update share text
                 updateShareText(projectName, households);
-                
-                // Project descriptions shown in results
-                const formattedNumber = formatNumber(households);
-                let explanation = '';
-
-                // Newsletter CTA text
-                let ctaTitle = 'Do you think this is okay?';
-                let ctaSubtitle = 'If not, join our mailing list to join our movement to reverse Britain\'s decline.';
-
-                if (projectName === 'HS2') {
-                    explanation = `Due to our broken planning system which prioritises consultants and surveys <strong>${formattedNumber}</strong> families are working for their <strong>ENTIRE</strong> lives just to fund this. <a href="#" onclick="event.preventDefault(); openSourcesPopup('HS2', [{name: 'HS2 6-monthly report to Parliament', url: 'https://www.gov.uk/government/speeches/hs2-6-monthly-report-to-parliament-july-2025'}])"><sup>1</sup></a><br><br>Spain managed to build a railway from Madrid to Barcelona for £17 billion. It should not cost us more than £40 billion for a railway which is not even finished. <a href="#" onclick="event.preventDefault(); openSourcesPopup('HS2 - Spain comparison', [{name: 'Spain aims to cut Madrid-Barcelona high speed rail time to under two hours', url: 'https://www.reuters.com/world/europe/spain-aims-cut-madrid-barcelona-high-speed-rail-time-under-two-hours-minister-2024-01-15/'}])"><sup>2</sup></a><br><br>We must do better.`;
-                } else if (projectName === 'A9 Dualling') {
-                    explanation = `Scotland's A9 road is dubbed 'Scotland's most dangerous road' where more than 300 crashes have occurred in just four years. <a href="#" onclick="event.preventDefault(); openSourcesPopup('A9 Dualling', [{name: 'SNP accused of betrayal over Scotland\\'s most dangerous road', url: 'https://www.telegraph.co.uk/politics/2024/03/10/snp-accused-of-betrayal-over-scotland-s-most-dangerous-road/'}])"><sup>3</sup></a><br><br>The road is mostly single laned. This will lead to dangerous overtakes which result in collisions, sometimes lethal.<br><br>It is now <strong>TEN</strong> years overdue. This is not acceptable. Just get it done.`;
-                } else if (projectName === 'Planning to build Lower Thames Crossing') {
-                    explanation = `£1.2 <strong>BILLION</strong> has been spent on the Lower Thames Crossing, but not to build it. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Lower Thames Crossing', [{name: 'Lower Thames Crossing has cost £1.2bn even before construction starts', url: 'https://www.ft.com/content/917d4b7f-318e-46fe-ba44-664551ebcf13'}])"><sup>4</sup></a> This money has been spent on just the planning alone. Not a single metre of road has been built.<br><br>That's ${formattedNumber} families working for their entire lifetimes to fund … nothing.`;
-                } else if (projectName === 'Fish Disco') {
-                    explanation = `After endless green lobby demands the Hinkley Point C nuclear power plant will have a 'fish disco'. This is a £700 million deterrent system which will save one salmon … every twelve years. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Fish Disco', [{name: '£700m nuclear conservation plan would save one salmon every 12 years', url: 'https://inews.co.uk/news/politics/700m-fish-disco-saving-one-salmon-every-12-years-4060892'}])"><sup>5</sup></a><br><br>That's ${formattedNumber} families working for their entire lives to blast noise to deter fish. This is not factoring in higher energy bills as a result.`;
-                } else if (projectName === 'Bat Tunnel') {
-                    explanation = `HS2 had to build a structure colloquially called a 'Bat Tunnel'. This is a tunnel which will 'protect' bats from high speed trains which will be going through this area.<br><br>The worst thing? The tunnel won't even protect bats. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Bat Tunnel', [{name: 'HS2\\'s £100m bat shield tunnel is not actually bat-proof', url: 'https://www.telegraph.co.uk/news/2024/12/21/hs2s-100m-bat-shield-tunnel-is-not-batproof/'}])"><sup>6</sup></a><br><br>That's ${formattedNumber} families working for their whole lives to fund a tunnel which won't even protect the thing it's meant to.`;
-                } else if (projectName === 'Natural England') {
-                    explanation = `Natural England is given ${formattedNumber} families' lifetime earnings to <strong>block</strong> kite festivals. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Natural England', [{name: 'Natural England action plan 2024 to 2025', url: 'https://www.gov.uk/government/publications/natural-england-action-plan-2024-to-2025'}, {name: 'LFG on kite festivals', url: 'https://x.com/lfg_uk/status/1970059386534977751'}])">Sources</a>`;
-                } else {
-                    explanation = '';
-                }
-
-                resultExplanation.innerHTML = explanation;
-
-                // Update newsletter CTA text
-                document.getElementById('nlCtaTitle').textContent = ctaTitle;
-                document.getElementById('nlCtaSubtitle').textContent = ctaSubtitle;
             }
+
+            // Project descriptions
+            let explanation = '';
+            let ctaTitle = 'Do you think this is okay?';
+            let ctaSubtitle = 'If not, join our mailing list to join our movement to reverse Britain\'s decline.';
+
+            if (projectName === 'HS2') {
+                explanation = `Due to our broken planning system which prioritises consultants and surveys <strong>${formattedNumber}</strong> families are working for their <strong>ENTIRE</strong> lives just to fund this. <a href="#" onclick="event.preventDefault(); openSourcesPopup('HS2', [{name: 'HS2 6-monthly report to Parliament', url: 'https://www.gov.uk/government/speeches/hs2-6-monthly-report-to-parliament-july-2025'}])"><sup>1</sup></a><br><br>Spain managed to build a railway from Madrid to Barcelona for £17 billion. It should not cost us more than £40 billion for a railway which is not even finished. <a href="#" onclick="event.preventDefault(); openSourcesPopup('HS2 - Spain comparison', [{name: 'Spain aims to cut Madrid-Barcelona high speed rail time to under two hours', url: 'https://www.reuters.com/world/europe/spain-aims-cut-madrid-barcelona-high-speed-rail-time-under-two-hours-minister-2024-01-15/'}])"><sup>2</sup></a><br><br>We must do better.`;
+            } else if (projectName === 'A9 Dualling') {
+                explanation = `Scotland's A9 road is dubbed 'Scotland's most dangerous road' where more than 300 crashes have occurred in just four years. <a href="#" onclick="event.preventDefault(); openSourcesPopup('A9 Dualling', [{name: 'SNP accused of betrayal over Scotland\\'s most dangerous road', url: 'https://www.telegraph.co.uk/politics/2024/03/10/snp-accused-of-betrayal-over-scotland-s-most-dangerous-road/'}])"><sup>3</sup></a><br><br>The road is mostly single laned. This will lead to dangerous overtakes which result in collisions, sometimes lethal.<br><br>It is now <strong>TEN</strong> years overdue. This is not acceptable. Just get it done.`;
+            } else if (projectName === 'Planning to build Lower Thames Crossing') {
+                explanation = `£1.2 <strong>BILLION</strong> has been spent on the Lower Thames Crossing, but not to build it. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Lower Thames Crossing', [{name: 'Lower Thames Crossing has cost £1.2bn even before construction starts', url: 'https://www.ft.com/content/917d4b7f-318e-46fe-ba44-664551ebcf13'}])"><sup>4</sup></a> This money has been spent on just the planning alone. Not a single metre of road has been built.<br><br>That's ${formattedNumber} families working for their entire lifetimes to fund … nothing.`;
+            } else if (projectName === 'Fish Disco') {
+                explanation = `After endless green lobby demands the Hinkley Point C nuclear power plant will have a 'fish disco'. This is a £700 million deterrent system which will save one salmon … every twelve years. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Fish Disco', [{name: '£700m nuclear conservation plan would save one salmon every 12 years', url: 'https://inews.co.uk/news/politics/700m-fish-disco-saving-one-salmon-every-12-years-4060892'}])"><sup>5</sup></a><br><br>That's ${formattedNumber} families working for their entire lives to blast noise to deter fish. This is not factoring in higher energy bills as a result.`;
+            } else if (projectName === 'Bat Tunnel') {
+                explanation = `HS2 had to build a structure colloquially called a 'Bat Tunnel'. This is a tunnel which will 'protect' bats from high speed trains which will be going through this area.<br><br>The worst thing? The tunnel won't even protect bats. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Bat Tunnel', [{name: 'HS2\\'s £100m bat shield tunnel is not actually bat-proof', url: 'https://www.telegraph.co.uk/news/2024/12/21/hs2s-100m-bat-shield-tunnel-is-not-batproof/'}])"><sup>6</sup></a><br><br>That's ${formattedNumber} families working for their whole lives to fund a tunnel which won't even protect the thing it's meant to.`;
+            } else if (projectName === 'Natural England') {
+                explanation = `Natural England is given ${formattedNumber} families' lifetime earnings to <strong>block</strong> kite festivals. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Natural England', [{name: 'Natural England action plan 2024 to 2025', url: 'https://www.gov.uk/government/publications/natural-england-action-plan-2024-to-2025'}, {name: 'LFG on kite festivals', url: 'https://x.com/lfg_uk/status/1970059386534977751'}])">Sources</a>`;
+            }
+
+            resultExplanation.innerHTML = explanation;
+            document.getElementById('nlCtaTitle').textContent = ctaTitle;
+            document.getElementById('nlCtaSubtitle').textContent = ctaSubtitle;
 
             resultsSection.classList.add('active');
             document.getElementById('shareFollowCard').style.display = 'block';
