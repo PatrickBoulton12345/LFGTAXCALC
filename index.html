@@ -2439,7 +2439,7 @@
             // Restoration of Parliament marker (with leader line)
             var parlLayers = [];
             var parlPos = [51.4995, -0.1248];
-            var parlLabelPos = [50.3, -2.2];
+            var parlLabelPos = [50.6, -1.6];
             var parlMarker = L.circleMarker(parlPos, {
                 radius: 6, fillColor: '#FE5500', color: '#000', weight: 2, fillOpacity: 1
             }).addTo(window.projectMap);
@@ -2457,7 +2457,7 @@
                     className: 'project-label-icon',
                     html: '<div class="project-label-box">Parliament</div>',
                     iconSize: null,
-                    iconAnchor: [120, 10]
+                    iconAnchor: [-5, 10]
                 })
             }).addTo(window.projectMap);
             parlLabel.on('click', function() {
@@ -2470,7 +2470,7 @@
             // The Garden Bridge marker (with leader line)
             var gbLayers = [];
             var gbPos = [51.5097, -0.1106];
-            var gbLabelPos = [50.0, 0.8];
+            var gbLabelPos = [50.5, 1.2];
             var gbMarker = L.circleMarker(gbPos, {
                 radius: 6, fillColor: '#FE5500', color: '#000', weight: 2, fillOpacity: 1
             }).addTo(window.projectMap);
