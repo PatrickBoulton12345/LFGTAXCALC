@@ -1565,7 +1565,7 @@
                     <span class="sidebar-cost">£3.97bn</span>
                 </div>
                 <div class="sidebar-item" onclick="selectProject(this, 1200000000, 'Lower Thames Crossing - Planning cost.')">
-                    <span class="sidebar-name">Lower Thames Crossing - Planning cost.</span>
+                    <span class="sidebar-name" style="font-size: 14px;">Lower Thames Crossing - Planning cost.</span>
                     <span class="sidebar-cost">£1.2bn</span>
                 </div>
                 <div class="sidebar-item" onclick="selectProject(this, 700000000, 'Fish Disco')">
@@ -2333,22 +2333,35 @@
 
             window.projectMapLayers['A9 Dualling'] = a9Layers;
 
-            // Lower Thames Crossing marker
+            // Lower Thames Crossing marker (with leader line)
             const ltcLayers = [];
             const ltcPos = [51.4559, 0.4390];
+            const ltcLabelPos = [52.5, 1.5];
             const ltcMarker = L.circleMarker(ltcPos, {
                 radius: 6, fillColor: '#FE5500', fillOpacity: 0.4, color: '#000000', weight: 2
-            }).addTo(window.projectMap).bindTooltip('Lower Thames Crossing - Planning cost.', {
-                permanent: true,
-                direction: 'right',
-                offset: [10, 0],
-                className: 'project-label'
-            });
+            }).addTo(window.projectMap);
             ltcMarker.on('click', function() {
                 const sidebarItem = document.querySelector('.sidebar-item[onclick*="Lower Thames"]');
                 if (sidebarItem) selectProject(sidebarItem, 1200000000, 'Lower Thames Crossing - Planning cost.');
             });
             ltcLayers.push(ltcMarker);
+            const ltcLeader = L.polyline([ltcPos, ltcLabelPos], {
+                color: '#000000', weight: 1.5, opacity: 0.6, dashArray: '4 4'
+            }).addTo(window.projectMap);
+            ltcLayers.push(ltcLeader);
+            const ltcLabel = L.marker(ltcLabelPos, {
+                icon: L.divIcon({
+                    className: 'project-label-icon',
+                    html: '<div class="project-label-box">Lower Thames Crossing</div>',
+                    iconSize: [0, 0],
+                    iconAnchor: [-5, 10]
+                })
+            }).addTo(window.projectMap);
+            ltcLabel.on('click', function() {
+                const sidebarItem = document.querySelector('.sidebar-item[onclick*="Lower Thames"]');
+                if (sidebarItem) selectProject(sidebarItem, 1200000000, 'Lower Thames Crossing - Planning cost.');
+            });
+            ltcLayers.push(ltcLabel);
             window.projectMapLayers['Lower Thames Crossing - Planning cost.'] = ltcLayers;
 
             // Fish Disco marker (Hinkley Point C)
@@ -2423,40 +2436,66 @@
             neLayers.push(neMarker);
             window.projectMapLayers['Natural England'] = neLayers;
 
-            // Restoration of Parliament marker (Palace of Westminster)
+            // Restoration of Parliament marker (with leader line)
             var parlLayers = [];
             var parlPos = [51.4995, -0.1248];
+            var parlLabelPos = [50.3, -2.2];
             var parlMarker = L.circleMarker(parlPos, {
                 radius: 6, fillColor: '#FE5500', color: '#000', weight: 2, fillOpacity: 1
-            }).addTo(window.projectMap).bindTooltip('Restoration of Parliament', {
-                permanent: true,
-                direction: 'right',
-                offset: [10, 0],
-                className: 'project-label'
-            });
+            }).addTo(window.projectMap);
             parlMarker.on('click', function() {
                 const sidebarItem = document.querySelector('.sidebar-item[onclick*="Restoration of Parliament"]');
                 if (sidebarItem) selectProject(sidebarItem, 40000000000, 'Restoration of Parliament');
             });
             parlLayers.push(parlMarker);
+            var parlLeader = L.polyline([parlPos, parlLabelPos], {
+                color: '#000000', weight: 1.5, opacity: 0.6, dashArray: '4 4'
+            }).addTo(window.projectMap);
+            parlLayers.push(parlLeader);
+            var parlLabel = L.marker(parlLabelPos, {
+                icon: L.divIcon({
+                    className: 'project-label-icon',
+                    html: '<div class="project-label-box">Parliament</div>',
+                    iconSize: [0, 0],
+                    iconAnchor: [-5, 10]
+                })
+            }).addTo(window.projectMap);
+            parlLabel.on('click', function() {
+                const sidebarItem = document.querySelector('.sidebar-item[onclick*="Restoration of Parliament"]');
+                if (sidebarItem) selectProject(sidebarItem, 40000000000, 'Restoration of Parliament');
+            });
+            parlLayers.push(parlLabel);
             window.projectMapLayers['Restoration of Parliament'] = parlLayers;
 
-            // The Garden Bridge marker
+            // The Garden Bridge marker (with leader line)
             var gbLayers = [];
             var gbPos = [51.5097, -0.1106];
+            var gbLabelPos = [50.0, 0.8];
             var gbMarker = L.circleMarker(gbPos, {
                 radius: 6, fillColor: '#FE5500', color: '#000', weight: 2, fillOpacity: 1
-            }).addTo(window.projectMap).bindTooltip('The Garden Bridge', {
-                permanent: true,
-                direction: 'right',
-                offset: [10, 0],
-                className: 'project-label'
-            });
+            }).addTo(window.projectMap);
             gbMarker.on('click', function() {
                 const sidebarItem = document.querySelector('.sidebar-item[onclick*="The Garden Bridge"]');
                 if (sidebarItem) selectProject(sidebarItem, 43000000, 'The Garden Bridge');
             });
             gbLayers.push(gbMarker);
+            var gbLeader = L.polyline([gbPos, gbLabelPos], {
+                color: '#000000', weight: 1.5, opacity: 0.6, dashArray: '4 4'
+            }).addTo(window.projectMap);
+            gbLayers.push(gbLeader);
+            var gbLabel = L.marker(gbLabelPos, {
+                icon: L.divIcon({
+                    className: 'project-label-icon',
+                    html: '<div class="project-label-box">Garden Bridge</div>',
+                    iconSize: [0, 0],
+                    iconAnchor: [-5, 10]
+                })
+            }).addTo(window.projectMap);
+            gbLabel.on('click', function() {
+                const sidebarItem = document.querySelector('.sidebar-item[onclick*="The Garden Bridge"]');
+                if (sidebarItem) selectProject(sidebarItem, 43000000, 'The Garden Bridge');
+            });
+            gbLayers.push(gbLabel);
             window.projectMapLayers['The Garden Bridge'] = gbLayers;
 
             // Fit to mainland UK bounds
