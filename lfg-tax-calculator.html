@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         @font-face {
             font-family: 'Octarine';
@@ -1628,6 +1629,10 @@
                     </p>
                 </div>
 
+                <button class="save-image-btn" onclick="saveResultAsImage()" style="margin-top: 24px; background: var(--black); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; transition: background 0.2s ease;">
+                    Save as Image
+                </button>
+
                 <div class="newsletter-cta">
                     <h3 class="newsletter-cta-title" id="nlCtaTitle">Your family could be one of them.</h3>
                     <p class="newsletter-cta-subtitle" id="nlCtaSubtitle">End this madness. Join our mailing list.</p>
@@ -1915,6 +1920,8 @@
                 explanation = `A tunnel to help bats cross a railway. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Bat Tunnel', [{name: 'HS2\\'s £100m bat shield tunnel is not actually bat-proof', url: 'https://www.telegraph.co.uk/news/2024/12/21/hs2s-100m-bat-shield-tunnel-is-not-batproof/'}])">Experts have said it won't work</a>, others claim it will harm more bats than it will help. Our planning laws made it necessary.<br><br>${bigNum}<br><br>are working for their entire lives to fund a tunnel for bats.`;
             } else if (projectName === 'Natural England') {
                 explanation = `Due to bizarre rules…<br><br>${bigNum}<br><br>are working for their entire lives to pay for Natural England to oppose local kite festivals and recommend they take place where there is no wind. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Natural England', [{name: 'Natural England action plan 2024 to 2025', url: 'https://www.gov.uk/government/publications/natural-england-action-plan-2024-to-2025'}, {name: 'LFG on kite festivals', url: 'https://x.com/lfg_uk/status/1970059386534977751'}])">Sources</a>`;
+            } else {
+                explanation = `${bigNum}<br><br>are working for their <strong>ENTIRE</strong> lives just to fund this.`;
             }
 
             resultExplanation.innerHTML = explanation;
@@ -1935,6 +1942,30 @@
                 const top = resultsSection.getBoundingClientRect().top + window.pageYOffset - headerHeight - 16;
                 window.scrollTo({ top: top, behavior: 'smooth' });
             }, 100);
+        }
+
+        function saveResultAsImage() {
+            const resultsSection = document.getElementById('resultsSection');
+            const saveBtn = resultsSection.querySelector('.save-image-btn');
+            const newsletter = resultsSection.querySelector('.newsletter-cta');
+            // Temporarily hide elements we don't want in the image
+            saveBtn.style.display = 'none';
+            newsletter.style.display = 'none';
+            html2canvas(resultsSection, {
+                backgroundColor: null,
+                scale: 2,
+                useCORS: true
+            }).then(canvas => {
+                saveBtn.style.display = '';
+                newsletter.style.display = '';
+                const link = document.createElement('a');
+                link.download = 'lfg-tax-calculator-result.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(() => {
+                saveBtn.style.display = '';
+                newsletter.style.display = '';
+            });
         }
 
         function animateNumber(element, target) {
