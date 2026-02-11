@@ -1919,24 +1919,41 @@
 
         function saveResultAsImage() {
             const W = 1080, H = 1350;
+            const border = 40;
+            const creamH = 180;
+            const dividerH = 4;
+            const blueTop = border;
+            const blueBottom = H - border - creamH - dividerH;
             const canvas = document.createElement('canvas');
             canvas.width = W;
             canvas.height = H;
             const ctx = canvas.getContext('2d');
 
-            // Background
-            ctx.fillStyle = '#79CAC4';
+            // Cream background (fills entire canvas as outer border)
+            ctx.fillStyle = '#EBE3D0';
             ctx.fillRect(0, 0, W, H);
+
+            // Blue main area
+            ctx.fillStyle = '#79CAC4';
+            ctx.fillRect(border, border, W - border * 2, blueBottom - border);
+
+            // Black divider between blue and cream
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(border, blueBottom, W - border * 2, dividerH);
+
+            // Cream bottom section
+            ctx.fillStyle = '#EBE3D0';
+            ctx.fillRect(border, blueBottom + dividerH, W - border * 2, creamH);
 
             // LFG logo top-left
             ctx.fillStyle = '#000000';
             ctx.font = 'bold 48px Octarine, DM Sans, sans-serif';
             ctx.textAlign = 'left';
-            ctx.fillText('LFG', 60, 80);
+            ctx.fillText('LFG', border + 40, border + 70);
 
             // lookingforgrowth.uk next to logo
             ctx.font = '400 28px DM Sans, sans-serif';
-            ctx.fillText('lookingforgrowth.uk', 160, 80);
+            ctx.fillText('lookingforgrowth.uk', border + 140, border + 70);
 
             // Project name
             const projectName = document.getElementById('resultProject').textContent;
@@ -1945,7 +1962,7 @@
             ctx.textAlign = 'center';
 
             // Word-wrap project name
-            const maxWidth = W - 120;
+            const maxWidth = W - border * 2 - 100;
             const words = projectName.split(' ');
             let lines = [];
             let currentLine = words[0];
@@ -1960,19 +1977,19 @@
             }
             lines.push(currentLine);
 
-            let yPos = 220;
+            let yPos = border + 180;
             lines.forEach(line => {
                 ctx.fillText(line, W / 2, yPos);
                 yPos += 64;
             });
 
-            // Divider line
+            // Divider line under project name
             yPos += 20;
             ctx.strokeStyle = 'rgba(0,0,0,0.15)';
             ctx.lineWidth = 3;
             ctx.beginPath();
-            ctx.moveTo(60, yPos);
-            ctx.lineTo(W - 60, yPos);
+            ctx.moveTo(border + 40, yPos);
+            ctx.lineTo(W - border - 40, yPos);
             ctx.stroke();
 
             // Families number in bordered box
@@ -2011,7 +2028,6 @@
             // Remove the families count line from explanation (it's already shown in the box)
             const tickerVal = ticker ? ticker.textContent : '';
             plainText = plainText.replace(tickerVal + ' families', '').trim();
-            // Clean up leading/trailing newlines
             plainText = plainText.replace(/^\n+/, '').replace(/\n{3,}/g, '\n\n');
 
             yPos += 80;
@@ -2038,8 +2054,9 @@
                 explLines.push(pLine);
             });
 
+            const maxExplY = blueBottom - 20;
             explLines.forEach(line => {
-                if (yPos > H - 160) return;
+                if (yPos > maxExplY) return;
                 if (line === '') {
                     yPos += 16;
                 } else {
@@ -2048,11 +2065,12 @@
                 }
             });
 
-            // Socials at bottom in italics
+            // Socials in cream section, italics
+            const socialY = blueBottom + dividerH + (creamH / 2) + 10;
             ctx.fillStyle = '#000000';
-            ctx.font = 'italic 26px DM Sans, sans-serif';
+            ctx.font = 'italic 28px DM Sans, sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText('@lfg_uk on X  •  @lookingforgrowthuk on Instagram', W / 2, H - 60);
+            ctx.fillText('@lfg_uk on X  •  @lookingforgrowthuk on Instagram', W / 2, socialY);
 
             // Download
             const link = document.createElement('a');
