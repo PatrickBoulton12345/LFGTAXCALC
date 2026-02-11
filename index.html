@@ -1720,9 +1720,9 @@
             document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
             sidebarEl.classList.add('active');
 
-            // Clear custom inputs
-            document.getElementById('customAmount').value = '';
-            document.getElementById('customName').value = '';
+            // Clear custom sidebar input
+            var sidebarInput = document.getElementById('sidebarCustomAmount');
+            if (sidebarInput) sidebarInput.value = '';
 
             // Highlight map route
             highlightMapProject(projectName);
