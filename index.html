@@ -1597,25 +1597,6 @@
             </div>
         </div>
 
-        <div class="section-header">
-            <span class="section-number">2</span>
-            <h2 class="section-title">Or enter your own figure</h2>
-        </div>
-
-        <div class="custom-section">
-            <div class="input-group">
-                <div class="input-wrapper">
-                    <label class="input-label" for="customName">What is this for?</label>
-                    <input type="text" id="customName" class="input-field input-field-text" placeholder="e.g. My local council project">
-                </div>
-                <div class="input-wrapper">
-                    <label class="input-label" for="customAmount">Government spend (£)</label>
-                    <input type="text" id="customAmount" class="input-field" placeholder="e.g. 500,000,000" oninput="formatInput(this)">
-                </div>
-                <button class="calculate-btn" onclick="calculateCustom()">Calculate</button>
-            </div>
-        </div>
-
         <div class="results-section" id="resultsSection">
             <div class="results-inner">
                 <div class="result-project" id="resultProject">—</div>
@@ -1859,21 +1840,13 @@
             const amountInput = document.getElementById('sidebarCustomAmount');
             const amount = parseAmount(amountInput.value);
             if (amount > 0) {
-                const projectName = 'Custom Amount (£' + formatNumber(amount) + ')';
+                const projectName = '£' + formatNumber(amount);
                 showResult(amount, projectName);
             }
         }
 
         function calculateCustom() {
-            const amountInput = document.getElementById('customAmount');
-            const nameInput = document.getElementById('customName');
-            const amount = parseAmount(amountInput.value);
-            if (amount > 0) {
-                document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
-                highlightMapProject(null);
-                const projectName = nameInput.value.trim() || 'Custom Amount (£' + formatNumber(amount) + ')';
-                showResult(amount, projectName);
-            }
+            calculateSidebarCustom();
         }
 
         function showResult(amount, projectName) {
@@ -1945,27 +1918,147 @@
         }
 
         function saveResultAsImage() {
-            const resultsSection = document.getElementById('resultsSection');
-            const saveBtn = resultsSection.querySelector('.save-image-btn');
-            const newsletter = resultsSection.querySelector('.newsletter-cta');
-            // Temporarily hide elements we don't want in the image
-            saveBtn.style.display = 'none';
-            newsletter.style.display = 'none';
-            html2canvas(resultsSection, {
-                backgroundColor: null,
-                scale: 2,
-                useCORS: true
-            }).then(canvas => {
-                saveBtn.style.display = '';
-                newsletter.style.display = '';
-                const link = document.createElement('a');
-                link.download = 'lfg-tax-calculator-result.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            }).catch(() => {
-                saveBtn.style.display = '';
-                newsletter.style.display = '';
+            const W = 1080, H = 1350;
+            const canvas = document.createElement('canvas');
+            canvas.width = W;
+            canvas.height = H;
+            const ctx = canvas.getContext('2d');
+
+            // Background
+            ctx.fillStyle = '#79CAC4';
+            ctx.fillRect(0, 0, W, H);
+
+            // LFG logo top-left
+            ctx.fillStyle = '#000000';
+            ctx.font = 'bold 48px Octarine, DM Sans, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText('LFG', 60, 80);
+
+            // lookingforgrowth.uk next to logo
+            ctx.font = '400 28px DM Sans, sans-serif';
+            ctx.fillText('lookingforgrowth.uk', 160, 80);
+
+            // Project name
+            const projectName = document.getElementById('resultProject').textContent;
+            ctx.fillStyle = '#000000';
+            ctx.font = 'bold 52px Octarine, DM Sans, sans-serif';
+            ctx.textAlign = 'center';
+
+            // Word-wrap project name
+            const maxWidth = W - 120;
+            const words = projectName.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                const testLine = currentLine + ' ' + words[i];
+                if (ctx.measureText(testLine).width > maxWidth) {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                } else {
+                    currentLine = testLine;
+                }
+            }
+            lines.push(currentLine);
+
+            let yPos = 220;
+            lines.forEach(line => {
+                ctx.fillText(line, W / 2, yPos);
+                yPos += 64;
             });
+
+            // Divider line
+            yPos += 20;
+            ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(60, yPos);
+            ctx.lineTo(W - 60, yPos);
+            ctx.stroke();
+
+            // Families number in bordered box
+            const ticker = document.getElementById('bigNumTicker');
+            const familiesText = ticker ? ticker.textContent + ' families' : '';
+            yPos += 80;
+            ctx.font = 'bold 64px Octarine, DM Sans, sans-serif';
+            const boxTextWidth = ctx.measureText(familiesText).width;
+            const boxPadX = 40, boxPadY = 24;
+            const boxW = boxTextWidth + boxPadX * 2;
+            const boxH = 64 + boxPadY * 2;
+            const boxX = (W - boxW) / 2;
+            const boxY = yPos - 64;
+
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.roundRect(boxX, boxY, boxW, boxH, 16);
+            ctx.stroke();
+
+            ctx.fillStyle = '#000000';
+            ctx.fillText(familiesText, W / 2, yPos);
+
+            // Explanation text (strip HTML tags, get plain text)
+            const explanationEl = document.getElementById('resultExplanation');
+            let plainText = explanationEl.innerHTML
+                .replace(/<br\s*\/?>/gi, '\n')
+                .replace(/<[^>]+>/g, '')
+                .replace(/&amp;/g, '&')
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&#39;/g, "'")
+                .replace(/&quot;/g, '"')
+                .trim();
+
+            // Remove the families count line from explanation (it's already shown in the box)
+            const tickerVal = ticker ? ticker.textContent : '';
+            plainText = plainText.replace(tickerVal + ' families', '').trim();
+            // Clean up leading/trailing newlines
+            plainText = plainText.replace(/^\n+/, '').replace(/\n{3,}/g, '\n\n');
+
+            yPos += 80;
+            ctx.font = '400 28px DM Sans, sans-serif';
+            ctx.fillStyle = '#000000';
+            const explLines = [];
+            const explParagraphs = plainText.split('\n');
+            explParagraphs.forEach(para => {
+                if (para.trim() === '') {
+                    explLines.push('');
+                    return;
+                }
+                const pWords = para.split(' ');
+                let pLine = pWords[0] || '';
+                for (let i = 1; i < pWords.length; i++) {
+                    const test = pLine + ' ' + pWords[i];
+                    if (ctx.measureText(test).width > maxWidth) {
+                        explLines.push(pLine);
+                        pLine = pWords[i];
+                    } else {
+                        pLine = test;
+                    }
+                }
+                explLines.push(pLine);
+            });
+
+            explLines.forEach(line => {
+                if (yPos > H - 160) return;
+                if (line === '') {
+                    yPos += 16;
+                } else {
+                    ctx.fillText(line, W / 2, yPos);
+                    yPos += 38;
+                }
+            });
+
+            // Socials at bottom in italics
+            ctx.fillStyle = '#000000';
+            ctx.font = 'italic 26px DM Sans, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('@lfg_uk on X  •  @lookingforgrowthuk on Instagram', W / 2, H - 60);
+
+            // Download
+            const link = document.createElement('a');
+            link.download = 'lfg-tax-calculator-result.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
         }
 
         function animateNumber(element, target) {
@@ -2032,17 +2125,6 @@
             document.body.style.overflow = '';
         }
 
-        document.getElementById('customAmount').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                calculateCustom();
-            }
-        });
-
-        document.getElementById('customName').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                calculateCustom();
-            }
-        });
 
         // Close popup on Escape key
         document.addEventListener('keydown', function(e) {
