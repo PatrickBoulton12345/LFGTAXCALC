@@ -1077,6 +1077,34 @@
             color: white;
         }
 
+        .sidebar-custom-input {
+            width: 80px;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--black);
+            font-family: 'Octarine', 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--black);
+            outline: none;
+            padding: 2px 0;
+        }
+
+        .sidebar-item.active .sidebar-custom-input,
+        .sidebar-item:hover .sidebar-custom-input {
+            color: white;
+            border-bottom-color: white;
+        }
+
+        .sidebar-custom-input::placeholder {
+            color: #999;
+        }
+
+        .sidebar-item.active .sidebar-custom-input::placeholder,
+        .sidebar-item:hover .sidebar-custom-input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
         /* Leaflet tooltip branding */
         #projectMap .leaflet-tooltip {
             background: var(--black);
@@ -1551,6 +1579,10 @@
                     <span class="sidebar-name">Natural England</span>
                     <span class="sidebar-cost">£173.3m</span>
                 </div>
+                <div class="sidebar-item" onclick="activateCustomSidebar(this)" id="customSidebarItem">
+                    <span class="sidebar-name">Enter your own figure</span>
+                    <span class="sidebar-cost" style="display: flex; align-items: center; gap: 0;">£<input type="text" id="sidebarCustomAmount" class="sidebar-custom-input" placeholder="0" oninput="formatInput(this)" onclick="event.stopPropagation();" onkeypress="if(event.key==='Enter'){event.preventDefault();calculateSidebarCustom();}"></span>
+                </div>
             </div>
         </div>
 
@@ -1809,6 +1841,22 @@
                 overlay.classList.remove('active');
                 overlay.querySelectorAll('.disco-fish, .disco-ball, .disco-sparkle').forEach(el => el.remove());
             }, 5500);
+        }
+
+        function activateCustomSidebar(sidebarEl) {
+            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+            sidebarEl.classList.add('active');
+            highlightMapProject(null);
+            document.getElementById('sidebarCustomAmount').focus();
+        }
+
+        function calculateSidebarCustom() {
+            const amountInput = document.getElementById('sidebarCustomAmount');
+            const amount = parseAmount(amountInput.value);
+            if (amount > 0) {
+                const projectName = 'Custom Amount (£' + formatNumber(amount) + ')';
+                showResult(amount, projectName);
+            }
         }
 
         function calculateCustom() {
