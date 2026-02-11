@@ -1580,6 +1580,14 @@
                     <span class="sidebar-name">Natural England</span>
                     <span class="sidebar-cost">£173.3m</span>
                 </div>
+                <div class="sidebar-item" onclick="selectProject(this, 40000000000, 'Restoration of Parliament')">
+                    <span class="sidebar-name">Restoration of Parliament</span>
+                    <span class="sidebar-cost">£40bn</span>
+                </div>
+                <div class="sidebar-item" onclick="selectProject(this, 43000000, 'The Garden Bridge')">
+                    <span class="sidebar-name">The Garden Bridge</span>
+                    <span class="sidebar-cost">£43m</span>
+                </div>
                 <div class="sidebar-item" onclick="activateCustomSidebar(this)" id="customSidebarItem">
                     <span class="sidebar-name">Enter your own figure</span>
                     <span class="sidebar-cost" style="display: flex; align-items: center; gap: 0;">£<input type="text" id="sidebarCustomAmount" class="sidebar-custom-input" placeholder="0" oninput="formatInput(this)" onclick="event.stopPropagation();" onkeypress="if(event.key==='Enter'){event.preventDefault();calculateSidebarCustom();}"></span>
@@ -1896,6 +1904,10 @@
                 explanation = `A tunnel to help bats cross a railway. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Bat Tunnel', [{name: 'HS2\\'s £100m bat shield tunnel is not actually bat-proof', url: 'https://www.telegraph.co.uk/news/2024/12/21/hs2s-100m-bat-shield-tunnel-is-not-batproof/'}])">Experts have said it won't work</a>, others claim it will harm more bats than it will help. Our planning laws made it necessary.<br><br>${bigNum}<br><br>are working for their entire lives to fund a tunnel for bats.`;
             } else if (projectName === 'Natural England') {
                 explanation = `Due to bizarre rules…<br><br>${bigNum}<br><br>are working for their entire lives to pay for Natural England to oppose local kite festivals and recommend they take place where there is no wind. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Natural England', [{name: 'Natural England action plan 2024 to 2025', url: 'https://www.gov.uk/government/publications/natural-england-action-plan-2024-to-2025'}, {name: 'LFG on kite festivals', url: 'https://x.com/lfg_uk/status/1970059386534977751'}])">Sources</a>`;
+            } else if (projectName === 'Restoration of Parliament') {
+                explanation = `Due to our ridiculous planning laws the restoration of parliament will take up<br><br>${bigNumStacked}<br><br>lifetime tax contributions, and take 61 years to complete.<br><br>\uD83C\uDDEB\uD83C\uDDF7 Notre Dame burnt in 2019. A national effort began to get it back open in <a href="#" onclick="event.preventDefault(); openSourcesPopup('Notre Dame restoration', [{name: 'Inside the $760M restoration of Notre Dame cathedral', url: 'https://www.cnn.com/style/notre-dame-cathedral-restoration/index.html'}])">five years</a>.<br><br>The Vegetable Lobby said \u2018you can\u2019t do that\u2019. \u2018There\u2019s too many problems\u2019 \u2018You have to follow certain regulations\u2019<br><br>Well \u2026 they did.<br>Five years.<br><a href="#" onclick="event.preventDefault(); openSourcesPopup('Notre Dame cost', [{name: 'Inside the $760M restoration of Notre Dame cathedral', url: 'https://www.cnn.com/style/notre-dame-cathedral-restoration/index.html'}])">\u20AC760 million</a>.<br>Done.<br><br>Five years later Notre Dame stands tall.<br><br>Meanwhile, in the United Kingdom.<br><br>Parliament will be restored in around sixty years and cost 40 times the restoration of Notre Dame. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Restoration of Parliament', [{name: 'Major restoration plans for Parliament revealed with costs of up to £40 billion — ITV News', url: 'https://www.itv.com/news/2026-02-05/parliament-restoration-plans-revealed-with-costs-of-up-to-40-billion'}, {name: 'Delivering restoration and renewal — UK Parliament', url: 'https://www.parliament.uk/business/news/2026/feb-2026/delivering-restoration-and-renewal-of-the-palace-of-westminster-the-costed-proposals-published/'}])">Sources</a>`;
+            } else if (projectName === 'The Garden Bridge') {
+                explanation = `Due to our insane planning laws<br><br>${bigNum}<br><br>are currently working for their entire lives to pay for a bridge that was \u2026 not built.<br><br>The planning for the bridge cost the public <a href="#" onclick="event.preventDefault(); openSourcesPopup('The Garden Bridge', [{name: 'Failed Garden Bridge project cost taxpayers £43 million', url: 'https://www.london-se1.co.uk/news/view/9832'}, {name: 'Garden Bridge — Wikipedia', url: 'https://en.wikipedia.org/wiki/Garden_Bridge'}])">£43 million</a>. Nothing was built.`;
             } else {
                 explanation = `${bigNum}<br><br>are working for their <strong>ENTIRE</strong> lives just to fund this.`;
             }
@@ -2410,6 +2422,42 @@
             });
             neLayers.push(neMarker);
             window.projectMapLayers['Natural England'] = neLayers;
+
+            // Restoration of Parliament marker (Palace of Westminster)
+            var parlLayers = [];
+            var parlPos = [51.4995, -0.1248];
+            var parlMarker = L.circleMarker(parlPos, {
+                radius: 6, fillColor: '#FE5500', color: '#000', weight: 2, fillOpacity: 1
+            }).addTo(window.projectMap).bindTooltip('Restoration of Parliament', {
+                permanent: true,
+                direction: 'right',
+                offset: [10, 0],
+                className: 'project-label'
+            });
+            parlMarker.on('click', function() {
+                const sidebarItem = document.querySelector('.sidebar-item[onclick*="Restoration of Parliament"]');
+                if (sidebarItem) selectProject(sidebarItem, 40000000000, 'Restoration of Parliament');
+            });
+            parlLayers.push(parlMarker);
+            window.projectMapLayers['Restoration of Parliament'] = parlLayers;
+
+            // The Garden Bridge marker
+            var gbLayers = [];
+            var gbPos = [51.5097, -0.1106];
+            var gbMarker = L.circleMarker(gbPos, {
+                radius: 6, fillColor: '#FE5500', color: '#000', weight: 2, fillOpacity: 1
+            }).addTo(window.projectMap).bindTooltip('The Garden Bridge', {
+                permanent: true,
+                direction: 'right',
+                offset: [10, 0],
+                className: 'project-label'
+            });
+            gbMarker.on('click', function() {
+                const sidebarItem = document.querySelector('.sidebar-item[onclick*="The Garden Bridge"]');
+                if (sidebarItem) selectProject(sidebarItem, 43000000, 'The Garden Bridge');
+            });
+            gbLayers.push(gbMarker);
+            window.projectMapLayers['The Garden Bridge'] = gbLayers;
 
             // Fit to mainland UK bounds
             var ukBounds = [[49.9, -6.5], [58.7, 1.8]];
