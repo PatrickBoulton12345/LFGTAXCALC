@@ -1589,8 +1589,8 @@
                     <span class="sidebar-cost">£43m</span>
                 </div>
                 <div class="sidebar-item" onclick="activateCustomSidebar(this)" id="customSidebarItem">
-                    <span class="sidebar-name">Enter your own figure</span>
-                    <span class="sidebar-cost" style="display: flex; align-items: center; gap: 0;">£<input type="text" id="sidebarCustomAmount" class="sidebar-custom-input" placeholder="0" oninput="formatInput(this)" onclick="event.stopPropagation();" onkeypress="if(event.key==='Enter'){event.preventDefault();calculateSidebarCustom();}"></span>
+                    <span class="sidebar-name"><input type="text" id="sidebarCustomName" class="sidebar-custom-input" placeholder="Name of the project" onclick="event.stopPropagation();" onkeypress="if(event.key==='Enter'){event.preventDefault();calculateSidebarCustom();}"></span>
+                    <span class="sidebar-cost" style="display: flex; align-items: center; gap: 0;">£<input type="text" id="sidebarCustomAmount" class="sidebar-custom-input" placeholder="" oninput="formatInput(this)" onclick="event.stopPropagation();" onkeypress="if(event.key==='Enter'){event.preventDefault();calculateSidebarCustom();}"></span>
                 </div>
             </div>
         </div>
@@ -1849,9 +1849,10 @@
 
         function calculateSidebarCustom() {
             const amountInput = document.getElementById('sidebarCustomAmount');
+            const nameInput = document.getElementById('sidebarCustomName');
             const amount = parseAmount(amountInput.value);
             if (amount > 0) {
-                const projectName = '£' + formatNumber(amount);
+                const projectName = nameInput.value.trim() || '£' + formatNumber(amount);
                 showResult(amount, projectName);
             }
         }
@@ -1893,21 +1894,21 @@
 
             if (projectName === 'HS2') {
                 const hs2Opening = `Due to endless delays, constant judicial reviews and repeated uncertainty from our broken laws…<br><br>${bigNumStacked}<br><br>`;
-                explanation = hs2Opening + `are working for their <strong>ENTIRE</strong> lives just to fund this.<br><br>Spain managed to build a railway from Madrid to Barcelona for <a href="#" onclick="event.preventDefault(); openSourcesPopup('HS2 - Spain comparison', [{name: 'Spain\\'s incredible £17bn train line between its two largest cities that runs at 217mph', url: 'https://www.express.co.uk/news/world/1968894/madrid-barcelona-spain-high-speed-train'}])">£17 billion</a>.<br><br>We must do better.`;
+                explanation = hs2Opening + `are working for their <strong>ENTIRE</strong> lives to fund a railway which needs bat tunnels for trains to run.<br><br>Spain managed to build a railway from Madrid to Barcelona for <a href="#" onclick="event.preventDefault(); openSourcesPopup('HS2 - Spain comparison', [{name: 'Spain\\'s incredible £17bn train line between its two largest cities that runs at 217mph', url: 'https://www.express.co.uk/news/world/1968894/madrid-barcelona-spain-high-speed-train'}])">£17 billion</a>.<br><br>We must do better.`;
             } else if (projectName === 'A9 Dualling') {
-                explanation = openingLine + `are working their entire lives just to fund making a single lane road into a dual carriageway.<br><br>The road is mostly a single carriageway. This will lead to dangerous overtakes which result in collisions, sometimes lethal.<br><br>It is now <strong>TEN</strong> years overdue. This is simply unacceptable. Just get it done.`;
+                explanation = openingLine + `are working for their entire lives just to convert a single carriageway into a dual carriageway.<br><br>The road is mostly a single carriageway. This leads to dangerous overtakes which result in collisions, sometimes lethal.<br><br>It is now <strong>TEN</strong> years overdue. This is simply unacceptable. Just get it done.`;
             } else if (projectName === 'Lower Thames Crossing - Planning cost.') {
                 explanation = `Not a single spade has hit the ground. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Lower Thames Crossing - Planning cost.', [{name: 'Lower Thames Crossing — Financial Times', url: 'https://www.ft.com/content/917d4b7f-318e-46fe-ba44-664551ebcf13'}])">£1.2 Billion has been spent so far.</a> This means that<br><br>${bigNum}<br><br>are working for their <strong>ENTIRE</strong> lives just to fund <strong>paperwork</strong>.<br><br>Not a single metre of road.<br><br>Norway built the world's <strong>LONGEST</strong> tunnel for <a href="#" onclick="event.preventDefault(); openSourcesPopup('Lower Thames Crossing - Norway tunnel', [{name: 'Incredible £98m tunnel is world\\'s longest linking two of Europe\\'s largest cities', url: 'https://www.mirror.co.uk/travel/incredible-98m-tunnel-worlds-longest-34256712'}])">£98 <strong>MILLION</strong></a>.<br><br>That means if we gave the Norwegians the money we have spent on <strong>JUST</strong> the paperwork, they would have been able to build <strong>TWELVE</strong> tunnels.`;
             } else if (projectName === 'Fish Disco') {
                 explanation = `Due to our incredibly complicated planning system and relentless pressure from the Vegetable Lobby…<br><br>${bigNum}<br><br>are working for their <strong>ENTIRE</strong> lives to save one salmon every twelve years. That's one expensive fish! You can get salmon for £3.59 in ALDI 🐟 <a href="#" onclick="event.preventDefault(); openSourcesPopup('Fish Disco', [{name: '£700m nuclear conservation plan would save one salmon every 12 years', url: 'https://inews.co.uk/news/politics/700m-fish-disco-saving-one-salmon-every-12-years-4060892'}])"><sup>1</sup></a>`;
             } else if (projectName === 'Bat Tunnel') {
-                explanation = `A tunnel to help bats cross a railway. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Bat Tunnel', [{name: 'HS2\\'s £100m bat shield tunnel is not actually bat-proof', url: 'https://www.telegraph.co.uk/news/2024/12/21/hs2s-100m-bat-shield-tunnel-is-not-batproof/'}])">Experts have said it won't work</a>, others claim it will harm more bats than it will help. Our planning laws made it necessary.<br><br>${bigNum}<br><br>are working for their entire lives to fund a tunnel for bats.`;
+                explanation = `A tunnel to help bats cross a railway. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Bat Tunnel', [{name: 'HS2\\'s £100m bat shield tunnel is not actually bat-proof', url: 'https://www.telegraph.co.uk/news/2024/12/21/hs2s-100m-bat-shield-tunnel-is-not-batproof/'}])">Experts have said it won't work</a>, others claim it will harm more bats than it will help. Our planning laws made it necessary.<br><br>${bigNum}<br><br>are working for their entire lives to fund a tunnel for bats, which might not even work. What a waste.`;
             } else if (projectName === 'Natural England') {
                 explanation = `Due to bizarre rules…<br><br>${bigNum}<br><br>are working for their entire lives to pay for Natural England to oppose local kite festivals and recommend they take place where there is no wind. <a href="#" onclick="event.preventDefault(); openSourcesPopup('Natural England', [{name: 'Natural England action plan 2024 to 2025', url: 'https://www.gov.uk/government/publications/natural-england-action-plan-2024-to-2025'}, {name: 'LFG on kite festivals', url: 'https://x.com/lfg_uk/status/1970059386534977751'}])">Sources</a>`;
             } else if (projectName === 'Restoration of Parliament') {
                 explanation = `Due to our ridiculous planning laws the restoration of parliament will take up<br><br>${bigNumStacked}<br><br>lifetime tax contributions, and take 61 years to complete.<br><br>\uD83C\uDDEB\uD83C\uDDF7 Notre Dame burnt in 2019. A national effort began to get it back open in <a href="#" onclick="event.preventDefault(); openSourcesPopup('Notre Dame restoration', [{name: 'Inside the $760M restoration of Notre Dame cathedral', url: 'https://www.cnn.com/style/notre-dame-cathedral-restoration/index.html'}])">five years</a>.<br><br>The Vegetable Lobby said \u2018you can\u2019t do that\u2019. \u2018There\u2019s too many problems\u2019. \u2018You have to follow certain regulations\u2019<br><br>Well \u2026 they ignored the Vegetable Lobby and just <strong>GOT IT DONE</strong>.<br>Five years.<br><a href="#" onclick="event.preventDefault(); openSourcesPopup('Notre Dame cost', [{name: 'Inside the $760M restoration of Notre Dame cathedral', url: 'https://www.cnn.com/style/notre-dame-cathedral-restoration/index.html'}])">\u20AC760 million</a>.<br>Done.<br><br>Five years later Notre Dame stands tall.<br><br>Meanwhile, in the United Kingdom \u2026<br><br>Parliament will be restored in around sixty years and cost 40 times the restoration of Notre Dame.`;
             } else if (projectName === 'The Garden Bridge') {
-                explanation = `Due to our insane planning laws<br><br>${bigNum}<br><br>are currently working for their entire lives to pay for a bridge that was \u2026 not built.<br><br>The planning for the bridge cost the public <a href="#" onclick="event.preventDefault(); openSourcesPopup('The Garden Bridge', [{name: 'Failed Garden Bridge project cost taxpayers £43 million', url: 'https://www.london-se1.co.uk/news/view/9832'}, {name: 'Garden Bridge — Wikipedia', url: 'https://en.wikipedia.org/wiki/Garden_Bridge'}])">£43 million</a>. Nothing was built.`;
+                explanation = `Due to our insane planning laws...<br><br>${bigNum}<br><br>are currently working for their entire lives to pay for a bridge that was \u2026 not built.<br><br>The planning for the bridge cost the public <a href="#" onclick="event.preventDefault(); openSourcesPopup('The Garden Bridge', [{name: 'Failed Garden Bridge project cost taxpayers £43 million', url: 'https://www.london-se1.co.uk/news/view/9832'}, {name: 'Garden Bridge — Wikipedia', url: 'https://en.wikipedia.org/wiki/Garden_Bridge'}])">£43 million</a>. Nothing was built. What a waste.`;
             } else {
                 explanation = `${bigNum}<br><br>are working for their <strong>ENTIRE</strong> lives just to fund this.`;
             }
@@ -2176,7 +2177,31 @@
             currentProjectName = projectName;
             currentHouseholds = households;
             const formattedNumber = formatNumber(households);
-            currentShareText = `${formattedNumber} households are working their ENTIRE lives to pay for ${projectName}. You could be one of them ... See how your taxes are being spent: `;
+            let tweetText = '';
+
+            if (projectName === 'HS2') {
+                tweetText = `Due to our insane planning system HS2 will consume ${formattedNumber} families lifetime tax contributions.\n\nIt does not have to be this way.\n\nSpain built a railway from Madrid to Barcelona for just \u00A317 billion.`;
+            } else if (projectName === 'A9 Dualling') {
+                tweetText = `Due to our insane planning system the cost of changing a road from single carriageway to dual carriageway will consume ${formattedNumber} families lifetime tax contributions.\n\nIt is TEN years overdue. This isn\u2019t acceptable.\n\nGet it done.`;
+            } else if (projectName === 'Bat Tunnel') {
+                tweetText = `Due to our insane planning system ${formattedNumber} families are working for their entire lives just to fund a tunnel for bats \u2013 which might not even work.`;
+            } else if (projectName === 'Natural England') {
+                tweetText = `${formattedNumber} families are working for their entire lives to fund Natural England \u2013 a vegetable lobby QUANGO which blocked a kite festival, and recommended it take place where there was \u2026 no wind.\n\nhttps://x.com/lfg_uk/status/1970059386534977751`;
+            } else if (projectName === 'Restoration of Parliament') {
+                tweetText = `\uD83C\uDDEB\uD83C\uDDF7Notre Dame burnt in 2019. Five years and \u20AC760 million later \u2013 it stands tall.\n\n\uD83C\uDDEC\uD83C\uDDE7Parliament is crumbling. It will take more than sixty years and consume the lifetime tax contributions of ${formattedNumber} families due to our ridiculous planning laws.`;
+            } else if (projectName === 'The Garden Bridge') {
+                tweetText = `${formattedNumber} families are currently working for their entire lives to fund a bridge which \u2026 was not built.`;
+            } else {
+                tweetText = `${formattedNumber} families are working their ENTIRE lives to pay for ${projectName}. You could be one of them.`;
+            }
+
+            // Add footer if under 228 character limit
+            const footer = `\n\nCheck more projects here. \u2B07\uFE0F`;
+            if ((tweetText + footer).length <= 228) {
+                tweetText += footer;
+            }
+
+            currentShareText = tweetText + '\n\n';
         }
 
         function shareToX() {
