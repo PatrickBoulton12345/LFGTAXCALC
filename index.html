@@ -2281,22 +2281,23 @@
 
             // HS2 route
             const hs2Layers = [];
-            const hs2Route = L.geoJSON(HS2_ROUTE_GEOJSON, {
-                style: {
-                    color: '#FE5500',
-                    weight: 4,
-                    opacity: 0.4
-                },
-                pointToLayer: function(feature, latlng) {
-                    return L.circleMarker(latlng, { radius: 0, opacity: 0, fillOpacity: 0 });
-                },
-                onEachFeature: function(feature, layer) {
-                    layer.on('click', function() {
-                        const sidebarItem = document.querySelector('.sidebar-item[onclick*="HS2"]');
-                        if (sidebarItem) selectProject(sidebarItem, 40500000000, 'HS2');
-                    });
-                }
+            // Convert MultiLineString segments into a single continuous polyline
+            const hs2Coords = [];
+            const segments = HS2_ROUTE_GEOJSON.features[0].geometry.coordinates;
+            segments.forEach(function(seg) {
+                seg.forEach(function(coord) {
+                    hs2Coords.push([coord[1], coord[0]]); // GeoJSON is [lng,lat], Leaflet is [lat,lng]
+                });
+            });
+            const hs2Route = L.polyline(hs2Coords, {
+                color: '#FE5500',
+                weight: 4,
+                opacity: 0.4
             }).addTo(window.projectMap);
+            hs2Route.on('click', function() {
+                const sidebarItem = document.querySelector('.sidebar-item[onclick*="HS2"]');
+                if (sidebarItem) selectProject(sidebarItem, 40500000000, 'HS2');
+            });
             hs2Layers.push(hs2Route);
 
             // London Euston marker
