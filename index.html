@@ -2195,7 +2195,7 @@
             let tweetText = '';
 
             if (projectName === 'HS2') {
-                tweetText = `Due to our insane planning system HS2 will consume ${formattedNumber} families lifetime tax contributions.\n\nIt does not have to be this way.\n\nSpain built a railway from Madrid to Barcelona for just \u00A317 billion.`;
+                tweetText = `Due to our insane planning system, HS2 will consume ${formattedNumber} families lifetime tax contributions.\n\nIt does not have to be this way.\n\nSpain built a railway from Madrid to Barcelona for just \u00A317 billion.\n\nCheck more projects here. \u2B07\uFE0F`;
             } else if (projectName === 'A9 Dualling') {
                 tweetText = `Due to our insane planning system the cost of changing a road from single carriageway to dual carriageway will consume ${formattedNumber} families lifetime tax contributions.\n\nIt is TEN years overdue. This isn\u2019t acceptable.\n\nGet it done.`;
             } else if (projectName === 'Lower Thames Crossing - Planning cost.') {
@@ -2230,7 +2230,7 @@
                 }
             } else {
                 // Already has "You could be one of them" or skipped, just try adding check more
-                if (tweetText.length + checkMore.length <= maxLen) {
+                if (tweetText.indexOf('Check more projects here') === -1 && tweetText.length + checkMore.length <= maxLen) {
                     tweetText += checkMore;
                 }
             }
