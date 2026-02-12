@@ -2206,14 +2206,15 @@
             const checkMore = `\n\nCheck more projects here. \u2B07\uFE0F`;
 
             // Add optional footers if space allows (skip if already in text)
-            if (tweetText.indexOf('You could be one of them') === -1) {
+            const skipYouCouldBe = (projectName === 'HS2');
+            if (!skipYouCouldBe && tweetText.indexOf('You could be one of them') === -1) {
                 if (tweetText.length + youCouldBe.length + checkMore.length <= maxLen) {
                     tweetText += youCouldBe + checkMore;
                 } else if (tweetText.length + youCouldBe.length <= maxLen) {
                     tweetText += youCouldBe;
                 }
             } else {
-                // Already has "You could be one of them", just try adding check more
+                // Already has "You could be one of them" or skipped, just try adding check more
                 if (tweetText.length + checkMore.length <= maxLen) {
                     tweetText += checkMore;
                 }
