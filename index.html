@@ -2200,8 +2200,8 @@
             }
 
             // Twitter: 280 max, URLs = 23 chars, emojis = 2 chars each
-            // URL always appended via &url= so 280 - 23 = 257 chars for text
-            const maxLen = 257;
+            // URL appended via &url= (23 chars) + 1 space before URL = 24
+            const maxLen = 256;
             const youCouldBe = `\n\nYou could be one of them.`;
             const checkMore = `\n\nCheck more projects here. \u2B07\uFE0F`;
 
@@ -2219,7 +2219,7 @@
                 }
             }
 
-            currentShareText = tweetText + '\n\n';
+            currentShareText = tweetText;
         }
 
         function shareToX() {
