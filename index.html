@@ -1895,8 +1895,9 @@
                 updateShareText(projectName, households);
             }
 
-            const bigNum = `<span style="font-family: 'Octarine', 'DM Sans', sans-serif; font-weight: 700; font-size: 32px; display: inline-block; border: 3px solid var(--black); border-radius: 12px; padding: 12px 24px; background-color: #ECE3D0;"><span id="bigNumTicker">0</span> families</span>`;
-            const bigNumStacked = `<span style="font-family: 'Octarine', 'DM Sans', sans-serif; font-weight: 700; font-size: 32px; display: inline-block; border: 3px solid var(--black); border-radius: 12px; padding: 12px 24px; text-align: center; background-color: #ECE3D0;"><span id="bigNumTicker">0</span><br>families</span>`;
+            const familyWord = Math.round(households) === 1 ? 'family' : 'families';
+            const bigNum = `<span style="font-family: 'Octarine', 'DM Sans', sans-serif; font-weight: 700; font-size: 32px; display: inline-block; border: 3px solid var(--black); border-radius: 12px; padding: 12px 24px; background-color: #ECE3D0;"><span id="bigNumTicker">0</span> ${familyWord}</span>`;
+            const bigNumStacked = `<span style="font-family: 'Octarine', 'DM Sans', sans-serif; font-weight: 700; font-size: 32px; display: inline-block; border: 3px solid var(--black); border-radius: 12px; padding: 12px 24px; text-align: center; background-color: #ECE3D0;"><span id="bigNumTicker">0</span><br>${familyWord}</span>`;
             const openingLine = `Due to endless delays, constant judicial reviews and repeated uncertainty from our broken laws…<br><br>${bigNum}<br><br>`;
 
             // Project descriptions
