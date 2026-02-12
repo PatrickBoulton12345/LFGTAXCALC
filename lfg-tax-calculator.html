@@ -1883,8 +1883,8 @@
                 updateShareText(projectName, households);
             }
 
-            const bigNum = `<span style="font-family: 'Octarine', 'DM Sans', sans-serif; font-weight: 700; font-size: 32px; display: inline-block; border: 3px solid var(--black); border-radius: 12px; padding: 12px 24px;"><span id="bigNumTicker">0</span> families</span>`;
-            const bigNumStacked = `<span style="font-family: 'Octarine', 'DM Sans', sans-serif; font-weight: 700; font-size: 32px; display: inline-block; border: 3px solid var(--black); border-radius: 12px; padding: 12px 24px; text-align: center;"><span id="bigNumTicker">0</span><br>families</span>`;
+            const bigNum = `<span style="font-family: 'Octarine', 'DM Sans', sans-serif; font-weight: 700; font-size: 32px; display: inline-block; border: 3px solid var(--black); border-radius: 12px; padding: 12px 24px; background-color: #ECE3D0;"><span id="bigNumTicker">0</span> families</span>`;
+            const bigNumStacked = `<span style="font-family: 'Octarine', 'DM Sans', sans-serif; font-weight: 700; font-size: 32px; display: inline-block; border: 3px solid var(--black); border-radius: 12px; padding: 12px 24px; text-align: center; background-color: #ECE3D0;"><span id="bigNumTicker">0</span><br>families</span>`;
             const openingLine = `Due to endless delays, constant judicial reviews and repeated uncertainty from our broken laws…<br><br>${bigNum}<br><br>`;
 
             // Project descriptions
@@ -2183,6 +2183,10 @@
                 tweetText = `Due to our insane planning system HS2 will consume ${formattedNumber} families lifetime tax contributions.\n\nIt does not have to be this way.\n\nSpain built a railway from Madrid to Barcelona for just \u00A317 billion.`;
             } else if (projectName === 'A9 Dualling') {
                 tweetText = `Due to our insane planning system the cost of changing a road from single carriageway to dual carriageway will consume ${formattedNumber} families lifetime tax contributions.\n\nIt is TEN years overdue. This isn\u2019t acceptable.\n\nGet it done.`;
+            } else if (projectName === 'Lower Thames Crossing - Planning cost.') {
+                tweetText = `${formattedNumber} families are working for their ENTIRE lives to pay for just the planning permission for the lower thames crossing.\n\nYou could be one of them.`;
+            } else if (projectName === 'Fish Disco') {
+                tweetText = `${formattedNumber} families are working for their entire lives to save one salmon every TWELVE years through a fish disco. That\u2019s one expensive fish! \uD83D\uDC1F\uD83E\uDE69\n\nYou could be one of them.`;
             } else if (projectName === 'Bat Tunnel') {
                 tweetText = `Due to our insane planning system ${formattedNumber} families are working for their entire lives just to fund a tunnel for bats \u2013 which might not even work.`;
             } else if (projectName === 'Natural England') {
@@ -2192,13 +2196,27 @@
             } else if (projectName === 'The Garden Bridge') {
                 tweetText = `${formattedNumber} families are currently working for their entire lives to fund a bridge which \u2026 was not built.`;
             } else {
-                tweetText = `${formattedNumber} families are working their ENTIRE lives to pay for ${projectName}. You could be one of them.`;
+                tweetText = `Due to our insane planning system \u2026 ${formattedNumber} families are working for their entire lives to pay for ${projectName}.`;
             }
 
-            // Add footer if under 228 character limit
-            const footer = `\n\nCheck more projects here. \u2B07\uFE0F`;
-            if ((tweetText + footer).length <= 228) {
-                tweetText += footer;
+            // Twitter: 280 max, URLs = 23 chars, emojis = 2 chars each
+            // URL always appended via &url= so 280 - 23 = 257 chars for text
+            const maxLen = 257;
+            const youCouldBe = `\n\nYou could be one of them.`;
+            const checkMore = `\n\nCheck more projects here. \u2B07\uFE0F`;
+
+            // Add optional footers if space allows (skip if already in text)
+            if (tweetText.indexOf('You could be one of them') === -1) {
+                if (tweetText.length + youCouldBe.length + checkMore.length <= maxLen) {
+                    tweetText += youCouldBe + checkMore;
+                } else if (tweetText.length + youCouldBe.length <= maxLen) {
+                    tweetText += youCouldBe;
+                }
+            } else {
+                // Already has "You could be one of them", just try adding check more
+                if (tweetText.length + checkMore.length <= maxLen) {
+                    tweetText += checkMore;
+                }
             }
 
             currentShareText = tweetText + '\n\n';
