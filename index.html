@@ -21,7 +21,6 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         @font-face {
             font-family: 'Octarine';
@@ -2141,11 +2140,16 @@
                 const link = document.createElement('a');
                 link.href = source.url;
                 link.target = '_blank';
+                link.rel = 'noopener noreferrer';
                 link.className = 'source-item';
-                link.innerHTML = `
-                    <span class="source-name">${source.name}</span>
-                    <span class="source-arrow">→</span>
-                `;
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'source-name';
+                nameSpan.textContent = source.name;
+                const arrowSpan = document.createElement('span');
+                arrowSpan.className = 'source-arrow';
+                arrowSpan.textContent = '→';
+                link.appendChild(nameSpan);
+                link.appendChild(arrowSpan);
                 list.appendChild(link);
             });
             
