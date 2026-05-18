@@ -1588,9 +1588,9 @@
                     <span class="sidebar-name">The Garden Bridge</span>
                     <span class="sidebar-cost">£43m</span>
                 </div>
-                <div class="sidebar-item" onclick="activateCustomSidebar(this)" id="customSidebarItem" style="flex-direction: column; align-items: stretch;">
-                    <input type="text" id="sidebarCustomName" class="sidebar-custom-input" placeholder="Name" style="width: 100%; margin-bottom: 6px;" onclick="event.stopPropagation();" onkeypress="if(event.key==='Enter'){event.preventDefault();document.getElementById('sidebarCustomAmount').focus();}">
-                    <span style="display: flex; align-items: center; gap: 0;">£<input type="text" id="sidebarCustomAmount" class="sidebar-custom-input" placeholder="" style="width: 100%;" oninput="formatInput(this)" onclick="event.stopPropagation();" onkeypress="if(event.key==='Enter'){event.preventDefault();calculateSidebarCustom();}"></span>
+                <div class="sidebar-item" onclick="openCustomPopup()" id="customSidebarItem">
+                    <span class="sidebar-name">Enter your own project</span>
+                    <span class="sidebar-cost">+</span>
                 </div>
             </div>
         </div>
@@ -1698,6 +1698,22 @@
         </div>
     </div>
 
+    <!-- Custom Project Popup -->
+    <div class="sources-popup-overlay" id="customPopupOverlay" onclick="closeCustomPopup()">
+        <div class="sources-popup" onclick="event.stopPropagation()" style="max-width: 460px;">
+            <button class="sources-popup-close" onclick="closeCustomPopup()">×</button>
+            <h3 class="sources-popup-title">Enter your own project</h3>
+            <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 16px;">
+                <input type="text" id="customPopupName" placeholder="Project name" style="font-family: 'DM Sans', sans-serif; font-size: 16px; padding: 12px 14px; border: 2px solid var(--black); border-radius: 10px; background: var(--cream); outline: none;" onkeypress="if(event.key==='Enter'){event.preventDefault();document.getElementById('customPopupAmount').focus();}">
+                <div style="display: flex; align-items: center; gap: 8px; border: 2px solid var(--black); border-radius: 10px; background: var(--cream); padding: 0 14px;">
+                    <span style="font-family: 'Octarine', 'DM Sans', sans-serif; font-weight: 700; font-size: 18px;">£</span>
+                    <input type="text" id="customPopupAmount" placeholder="Amount" style="font-family: 'DM Sans', sans-serif; font-size: 16px; padding: 12px 0; border: none; background: transparent; outline: none; flex: 1; width: 100%;" oninput="formatInput(this)" onkeypress="if(event.key==='Enter'){event.preventDefault();submitCustomPopup();}">
+                </div>
+                <button onclick="submitCustomPopup()" style="font-family: 'Octarine', 'DM Sans', sans-serif; font-weight: 700; font-size: 18px; padding: 14px 20px; background: var(--orange); color: white; border: 3px solid var(--black); border-radius: 12px; cursor: pointer; margin-top: 4px;">Calculate</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const HOUSEHOLD_CONTRIBUTION = 1277580;
 
@@ -1730,10 +1746,6 @@
             // Highlight sidebar item
             document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
             sidebarEl.classList.add('active');
-
-            // Clear custom sidebar input
-            var sidebarInput = document.getElementById('sidebarCustomAmount');
-            if (sidebarInput) sidebarInput.value = '';
 
             // Highlight map route
             highlightMapProject(projectName);
@@ -1840,25 +1852,33 @@
             }, 5500);
         }
 
-        function activateCustomSidebar(sidebarEl) {
+        function openCustomPopup() {
             document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
-            sidebarEl.classList.add('active');
+            const item = document.getElementById('customSidebarItem');
+            if (item) item.classList.add('active');
             highlightMapProject(null);
-            document.getElementById('sidebarCustomAmount').focus();
+            document.getElementById('customPopupOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => {
+                const nameInput = document.getElementById('customPopupName');
+                if (nameInput) nameInput.focus();
+            }, 50);
         }
 
-        function calculateSidebarCustom() {
-            const amountInput = document.getElementById('sidebarCustomAmount');
-            const nameInput = document.getElementById('sidebarCustomName');
+        function closeCustomPopup() {
+            document.getElementById('customPopupOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function submitCustomPopup() {
+            const amountInput = document.getElementById('customPopupAmount');
+            const nameInput = document.getElementById('customPopupName');
             const amount = parseAmount(amountInput.value);
             if (amount > 0) {
                 const projectName = nameInput.value.trim() || '£' + formatNumber(amount);
+                closeCustomPopup();
                 showResult(amount, projectName);
             }
-        }
-
-        function calculateCustom() {
-            calculateSidebarCustom();
         }
 
         function showResult(amount, projectName) {
@@ -2170,6 +2190,7 @@
             if (e.key === 'Escape') {
                 closeSourcesPopup();
                 closeMethodologyPopup();
+                closeCustomPopup();
             }
         });
 
