@@ -61,7 +61,7 @@ export default async function handler(req, res) {
             return res.status(200).json({ ok: true });
         }
 
-        console.error('Brevo error:', brevoRes.status, body);
+        console.error('Brevo error:', brevoRes.status, body && body.code);
         return res.status(502).json({ error: 'Upstream error' });
     } catch (err) {
         console.error('Subscribe handler error:', err);
