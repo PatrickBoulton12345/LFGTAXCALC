@@ -2566,8 +2566,7 @@
 
 <script>
     (function() {
-        const NL_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/24440311/ursog2a/';
-        const NL_LIST_ID = '56';
+        const NL_ENDPOINT = '/api/subscribe';
 
         const nlForm = document.getElementById('newsletterForm');
         const nlName = document.getElementById('nlName');
@@ -2624,16 +2623,10 @@
             nlSubmitBtn.textContent = 'submitting...';
 
             try {
-                const payload = new URLSearchParams({
-                    'Name': name,
-                    'Email': email,
-                    'List ID(s)': NL_LIST_ID
-                });
-
-                const response = await fetch(NL_WEBHOOK, {
+                const response = await fetch(NL_ENDPOINT, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: payload.toString()
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: name, email: email })
                 });
 
                 if (!response.ok) throw new Error('Failed');
