@@ -1709,7 +1709,8 @@
                     <span style="font-family: 'Octarine', 'DM Sans', sans-serif; font-weight: 700; font-size: 18px;">£</span>
                     <input type="text" id="customPopupAmount" placeholder="Amount" style="font-family: 'DM Sans', sans-serif; font-size: 16px; padding: 12px 0; border: none; background: transparent; outline: none; flex: 1; width: 100%;" oninput="formatInput(this)" onkeypress="if(event.key==='Enter'){event.preventDefault();submitCustomPopup();}">
                 </div>
-                <button onclick="submitCustomPopup()" style="font-family: 'Octarine', 'DM Sans', sans-serif; font-weight: 700; font-size: 18px; padding: 14px 20px; background: var(--orange); color: white; border: 3px solid var(--black); border-radius: 12px; cursor: pointer; margin-top: 4px;">Calculate</button>
+                <span id="customPopupError" style="display: none; color: #d22; font-family: 'DM Sans', sans-serif; font-size: 14px; margin-top: -6px;">No special characters allowed</span>
+                <button id="customCalculateBtn" onclick="submitCustomPopup()" disabled style="font-family: 'Octarine', 'DM Sans', sans-serif; font-weight: 700; font-size: 18px; padding: 14px 20px; background: var(--orange); color: white; border: 3px solid var(--black); border-radius: 12px; cursor: not-allowed; opacity: 0.5; margin-top: 4px;">Calculate</button>
             </div>
         </div>
     </div>
@@ -1730,12 +1731,30 @@
         }
 
         function formatInput(input) {
-            let value = input.value.replace(/[^0-9.]/g, '');
+            const raw = input.value;
+            const hasInvalid = /[^0-9.,]/.test(raw);
+            let value = raw.replace(/[^0-9.]/g, '');
             if (value) {
                 const parts = value.split('.');
-                parts[0] = parseInt(parts[0]).toLocaleString('en-GB');
+                const intPart = parseInt(parts[0], 10);
+                parts[0] = isNaN(intPart) ? '' : intPart.toLocaleString('en-GB');
                 input.value = parts.join('.');
+            } else {
+                input.value = '';
             }
+            updateCustomCalcState(hasInvalid);
+        }
+
+        function updateCustomCalcState(hasInvalid) {
+            const errorEl = document.getElementById('customPopupError');
+            const btn = document.getElementById('customCalculateBtn');
+            if (!btn || !errorEl) return;
+            const amount = parseAmount(document.getElementById('customPopupAmount').value);
+            errorEl.style.display = hasInvalid ? 'block' : 'none';
+            const disabled = hasInvalid || amount <= 0;
+            btn.disabled = disabled;
+            btn.style.opacity = disabled ? '0.5' : '1';
+            btn.style.cursor = disabled ? 'not-allowed' : 'pointer';
         }
 
         function parseAmount(str) {
@@ -1859,8 +1878,12 @@
             highlightMapProject(null);
             document.getElementById('customPopupOverlay').classList.add('active');
             document.body.style.overflow = 'hidden';
+            const amountInput = document.getElementById('customPopupAmount');
+            const nameInput = document.getElementById('customPopupName');
+            if (amountInput) amountInput.value = '';
+            if (nameInput) nameInput.value = '';
+            updateCustomCalcState(false);
             setTimeout(() => {
-                const nameInput = document.getElementById('customPopupName');
                 if (nameInput) nameInput.focus();
             }, 50);
         }
@@ -1871,6 +1894,8 @@
         }
 
         function submitCustomPopup() {
+            const btn = document.getElementById('customCalculateBtn');
+            if (btn && btn.disabled) return;
             const amountInput = document.getElementById('customPopupAmount');
             const nameInput = document.getElementById('customPopupName');
             const amount = parseAmount(amountInput.value);
