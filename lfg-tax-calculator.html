@@ -1560,9 +1560,9 @@
             </div>
             <!-- Sidebar -->
             <div class="sidebar-panel" id="sidebarPanel">
-                <div class="sidebar-item" onclick="selectProject(this, 100000000000, 'HS2 - Projected')">
+                <div class="sidebar-item" onclick="selectProject(this, 102700000000, 'HS2 - Projected')">
                     <span class="sidebar-name">HS2 - Projected</span>
-                    <span class="sidebar-cost">£100bn</span>
+                    <span class="sidebar-cost">£102.7bn</span>
                 </div>
                 <div class="sidebar-item" onclick="selectProject(this, 1200000000, 'Lower Thames Crossing - Planning cost.')">
                     <span class="sidebar-name" style="font-size: 14px;">Lower Thames Crossing - Planning cost.</span>
@@ -2305,7 +2305,7 @@
                 onEachFeature: function(feature, layer) {
                     layer.on('click', function() {
                         const sidebarItem = document.querySelector('.sidebar-item[onclick*="HS2"]');
-                        if (sidebarItem) selectProject(sidebarItem, 100000000000, 'HS2 - Projected');
+                        if (sidebarItem) selectProject(sidebarItem, 102700000000, 'HS2 - Projected');
                     });
                 }
             }).addTo(window.projectMap);
@@ -2322,7 +2322,7 @@
             }).addTo(window.projectMap);
             londonMarker.on('click', function() {
                 const sidebarItem = document.querySelector('.sidebar-item[onclick*="HS2"]');
-                if (sidebarItem) selectProject(sidebarItem, 100000000000, 'HS2 - Projected');
+                if (sidebarItem) selectProject(sidebarItem, 102700000000, 'HS2 - Projected');
             });
             hs2Layers.push(londonMarker);
 
@@ -2342,7 +2342,7 @@
             });
             birminghamMarker.on('click', function() {
                 const sidebarItem = document.querySelector('.sidebar-item[onclick*="HS2"]');
-                if (sidebarItem) selectProject(sidebarItem, 100000000000, 'HS2 - Projected');
+                if (sidebarItem) selectProject(sidebarItem, 102700000000, 'HS2 - Projected');
             });
             hs2Layers.push(birminghamMarker);
 
