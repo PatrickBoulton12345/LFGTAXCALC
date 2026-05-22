@@ -7,7 +7,36 @@
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const ALLOWED_ORIGINS = new Set([
+    'https://lfgtaxcalc1.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:5173',
+]);
+
+function applyCors(req, res) {
+    const origin = req.headers.origin;
+    const allowed = typeof origin === 'string' && ALLOWED_ORIGINS.has(origin);
+    if (allowed) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Vary', 'Origin');
+        res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+        res.setHeader('Access-Control-Max-Age', '86400');
+    }
+    return allowed;
+}
+
 export default async function handler(req, res) {
+    const originAllowed = applyCors(req, res);
+
+    if (req.method === 'OPTIONS') {
+        return res.status(originAllowed ? 204 : 403).end();
+    }
+
+    if (!originAllowed) {
+        return res.status(403).json({ error: 'Forbidden' });
+    }
+
     if (req.method !== 'POST') {
         res.setHeader('Allow', 'POST');
         return res.status(405).json({ error: 'Method not allowed' });
